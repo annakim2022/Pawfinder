@@ -103,11 +103,18 @@
                     android:text="Baby" />
 
                 <CheckBox
-                    android:id="@+id/checkBox_YA"
+                    android:id="@+id/checkBox_young"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10sp"
-                    android:text="Young Adult" />
+                    android:text="Young" />
+
+                <CheckBox
+                    android:id="@+id/checkBox_adult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Adult" />
 
                 <CheckBox
                     android:id="@+id/checkBox_senior"
