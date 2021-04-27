@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +34,11 @@ public class SecondActivity extends AppCompatActivity {
                     checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly, checkBox_yesSpNd, checkBox_noSpNd;
 
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs;
-    private SeekBar seekBar_distance;
+    private SeekBar seekBar;
     private Button button_find;
+
+    private EditText editText_location;
+    private TextView textView_seekbarDistance;
 
     private List<String> list_id;
     private List<String> list_type;
@@ -41,6 +46,7 @@ public class SecondActivity extends AppCompatActivity {
     private List<String> list_age;
     private List<String> list_gender;
     private List<String> list_photos;
+    private List<String> list_distance;
 
 
     @Override
@@ -74,8 +80,14 @@ public class SecondActivity extends AppCompatActivity {
         switch_gwChildren = findViewById(R.id.switch_gwChildren);
         switch_gwCats = findViewById(R.id.switch_gwCats);
         switch_gwDogs = findViewById(R.id.switch_gwDogs);
-        seekBar_distance = findViewById(R.id.seekBar_distance);
+        seekBar = findViewById(R.id.seekBar_distance);
         button_find = findViewById(R.id.button_find);
+        editText_location = findViewById(R.id.editText_location);
+        textView_seekbarDistance = findViewById(R.id.textView_seekbarDistance);
+
+        textView_seekbarDistance.setText("100");
+
+        seekFunction();
 
         button_find.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +95,7 @@ public class SecondActivity extends AppCompatActivity {
                 launchNextActivity(v);
             }
         });
+
 
     }
     public void launchNextActivity(View v) {
@@ -149,8 +162,20 @@ public class SecondActivity extends AppCompatActivity {
         if(gwDogs){ api_url = api_url + "good_with_dogs=1&"; }
 
 
+        // need to figure out how to check if the location is correct
+        if(editText_location.getText().toString().isEmpty()){
+            System.out.println("testing");
+        }else{
+            api_url = api_url + "location=" + editText_location.getText().toString() + "&";
+        }
+        if(editText_location.getText().toString().isEmpty()){
+            System.out.println("just testing some stuff");
+        }else {
+            api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
+        }
+
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImE3MmJlMTljM2ZkNGE1OTc1YWEzYTMzOWM1OWY2NTc3YWJlNTExMmJiNDQ2MWIxNjI1YTM0ODIyYjczZWU3NjE5ODhmYjk1OGJkNDNlMjE4IiwiaWF0IjoxNjE4MzU4MjU5LCJuYmYiOjE2MTgzNTgyNTksImV4cCI6MTYxODM2MTg1OSwic3ViIjoiIiwic2NvcGVzIjpbXX0.MOKcHEWMZqzcwG-9KcJg7mz0i7XE9k8CJ0qKzXiXS4ilwx3z3AHZ4pP5uvwsMeq0LO3xHh5bImA8T9sx04X6kEpDUh1Zs9KU3j8R18F28IEmtDmI56ldqGaRcDVZoNGbD35hYcVGM1d3zqQmBaGKT87VZ8Xzm3ctrGK69n9rdb6a8vVm0xcUU1pA8Tjk7D8HsU5zFbADIEJjtu-9P-zvm77eXuASVmR5mf8JlsOFvNg_nzZqQdyRAGHQOLjDz3QRqoKNCzwBt4KYyg-P6w3Ol6Ky0CqueBU2dNDk2rexMe9hakRfb6OkaTYaIR4Ie3LVtfAaV_NClNlETpcx-cDSWg");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImJjM2E2M2MwMzM0Y2Y4YjkyMWM5NmExYTM5MGVkYTY3MmY0ZDAzMTdhZmNhZmY3MjcxZWY2OWFjNzNhN2E5ZGE4MmYyMjhmMTczNWEwY2VhIiwiaWF0IjoxNjE5NDc4NDIzLCJuYmYiOjE2MTk0Nzg0MjMsImV4cCI6MTYxOTQ4MjAyMywic3ViIjoiIiwic2NvcGVzIjpbXX0.RNHLZUk2rz0cwo4epTVeIjWEMsOgGgs5G1fqe3hBPOF7dQwHLPC4scCZ53TjUbzy0IcMS0jitws4qy-7-VceUb_7PnfU2Ljwl_t3sNNdmDfbYZE07cSIOE-7MapoaMmZFVW4gDRFz8UmAUm5KKIoaXI7BpcRe06jFFBnrQ9W9dqW26hCWrryQFYDwsbIqLDEvSeWo7Q31H7gab-JFt8DswEn7t7agi1z3sTJ7AvEjaOmZV1SjCVE1HSv6GP5zDZTBI_ZjJpgP5WLnMK84YEnDoNJnus-UeI9IR_Lz78cQjchVQugphosSuwQYU3vw6Yvk2I0v2-QF-T2c2vRC9Ivbw");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -166,6 +191,7 @@ public class SecondActivity extends AppCompatActivity {
                     list_age = new ArrayList<String>();
                     list_gender = new ArrayList<String>();
                     list_photos = new ArrayList<String>();
+                    list_distance = new ArrayList<String>();
 
                     JSONArray animal = json.getJSONArray("animals");
 
@@ -187,7 +213,10 @@ public class SecondActivity extends AppCompatActivity {
                         String gender = temp.getString("gender");
                         list_gender.add(gender);
 
-                       // String photos = temp.getString("photos");
+                        String distance = temp.getString("distance");
+                        list_distance.add(distance);
+
+
                         JSONArray ph_arr = temp.getJSONArray("photos");
                         if(ph_arr.length() > 0) {
                             JSONObject te = ph_arr.getJSONObject(0);
@@ -197,35 +226,51 @@ public class SecondActivity extends AppCompatActivity {
                         }else{
                             list_photos.add("https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/51202556/2/?bust=1618338275&width=100");
                         }
-
-                        System.out.println("this is arrrrrrrr " + ph_arr);
-
                     }
 
-
-                    intent.putStringArrayListExtra("id", (ArrayList<String>) list_id); // this used for later trust me LOL, but not displayed in next page
+                    intent.putStringArrayListExtra("id", (ArrayList<String>) list_id);
                     intent.putStringArrayListExtra("type", (ArrayList<String>) list_type);
                     intent.putStringArrayListExtra("name", (ArrayList<String>) list_name);
                     intent.putStringArrayListExtra("age", (ArrayList<String>) list_age);
                     intent.putStringArrayListExtra("gender", (ArrayList<String>) list_gender);
+                    intent.putStringArrayListExtra("distance", (ArrayList<String>) list_distance);
                     intent.putStringArrayListExtra("photo", (ArrayList<String>) list_photos);
                     startActivity(intent);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
             }
         });
-
-
-
     }
+
+    public void seekFunction(){
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textView_seekbarDistance.setText("" + progress);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+    }
+
+
+// need to check the location somehow
+    /*
+    private void checkLocation(){
+        editText_location.getText();
+    }
+
+     */
+
 
 }

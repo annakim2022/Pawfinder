@@ -435,6 +435,31 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView_locationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Location:"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/editText_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:hint="Enter location to set distance! (as zipcode; city, state; latitude, longitude)"
+                    android:inputType="textMultiLine" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
                     android:id="@+id/textView_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -452,12 +477,12 @@
                     android:max="500"
                     android:progress="100" />
 
-                <EditText
-                    android:id="@+id/plain_text_input"
+                <TextView
+                    android:id="@+id/textView_seekbarDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="100"
-                    android:inputType="number" />
+                    android:layout_weight="1"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
