@@ -1,11 +1,18 @@
 package com.example.pawfinder;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,13 +39,24 @@ public class FifthActivity extends AppCompatActivity {
         String name = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
 
-        textView_message.setText("Message: Hey, check out this " + type + "! His/Her name is " + name + " and I'm " +
+        String type_updated = type.replace("Type: ", "");
+
+        textView_message.setText("Message: Hey, check out this " + type_updated + "! His/Her name is " + name + " and I'm " +
                 "thinking about adopting him/her. Let me know what you think!");
         // just a thought we can also send the gender as an intent ^^ later problem
 
         button_shareAct5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    SmsManager smgr = SmsManager.getDefault();
+                    smgr.sendTextMessage(editText_phone.getText().toString(), null, textView_message.getText().toString(), null, null);
+                    Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
+                }catch(Exception e){
+                    Toast.makeText(FifthActivity.this, "Failed to send, check entered phone number", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });

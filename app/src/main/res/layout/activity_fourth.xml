@@ -101,5 +101,11 @@
             android:text="Share!"
             android:textSize="18sp" />
 
+        <Button
+            android:id="@+id/button_contactOrg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contact Organization!" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

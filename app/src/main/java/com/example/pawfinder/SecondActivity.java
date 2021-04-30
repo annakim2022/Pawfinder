@@ -175,7 +175,7 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImJjM2E2M2MwMzM0Y2Y4YjkyMWM5NmExYTM5MGVkYTY3MmY0ZDAzMTdhZmNhZmY3MjcxZWY2OWFjNzNhN2E5ZGE4MmYyMjhmMTczNWEwY2VhIiwiaWF0IjoxNjE5NDc4NDIzLCJuYmYiOjE2MTk0Nzg0MjMsImV4cCI6MTYxOTQ4MjAyMywic3ViIjoiIiwic2NvcGVzIjpbXX0.RNHLZUk2rz0cwo4epTVeIjWEMsOgGgs5G1fqe3hBPOF7dQwHLPC4scCZ53TjUbzy0IcMS0jitws4qy-7-VceUb_7PnfU2Ljwl_t3sNNdmDfbYZE07cSIOE-7MapoaMmZFVW4gDRFz8UmAUm5KKIoaXI7BpcRe06jFFBnrQ9W9dqW26hCWrryQFYDwsbIqLDEvSeWo7Q31H7gab-JFt8DswEn7t7agi1z3sTJ7AvEjaOmZV1SjCVE1HSv6GP5zDZTBI_ZjJpgP5WLnMK84YEnDoNJnus-UeI9IR_Lz78cQjchVQugphosSuwQYU3vw6Yvk2I0v2-QF-T2c2vRC9Ivbw");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImE2NjNlMzFiMzUwZWZhYjA1OTM5OWM0NTFmNzk3MDg2MDg1YzQ5ZjU1MTk3MmU3ODA0Njg1ZjcwZDBkYzA5ODBkN2YyOGM1ZmNlYzllNzYzIiwiaWF0IjoxNjE5ODEzMjE4LCJuYmYiOjE2MTk4MTMyMTgsImV4cCI6MTYxOTgxNjgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.iVqQpm8yy5o-zhQv8M-SjjMQoi34isfYRGN1jbj5ZnjSYhQGtGqCWxWxm25CUgTSXeDqlTb8YwKqkOGgWCqnkhfZdPrveJszg8_WTe0jIsYyG-zy0uyUex5wvf4t_x6to6X1I2Fmmce5Ebw52LMofn2tUICzA9Ef-6ynf0bNqWVKVOHzcnPIRIrsnPZWNZP1ttufDXXWWy9AsJC6jkNFaTWX1XcDhLK_BLtPq4uAKCseAgSwFbT8EykPrLmpnO1lqOgCPCb_X2JxFFIf5Vc58Zi2QJ07qC_P--R8SlSAQgI8RlosItNduPK5qB0AsZZ2FOY-2kmQoCkgx9i_8m6ESA");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
