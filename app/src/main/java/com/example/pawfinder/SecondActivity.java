@@ -62,13 +62,16 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
     private Button button_find;
     private TextView textView_seekbarDistance;
     private TextView textView_location;
+
     private List<String> list_id;
+    private List<String> list_org;
     private List<String> list_type;
     private List<String> list_name;
     private List<String> list_age;
     private List<String> list_gender;
     private List<String> list_photos;
     private List<String> list_distance;
+
     // brightness
     private SensorManager sensorManager;
     private Sensor lightSensor;
@@ -117,7 +120,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             textView_location.setText(getLastLocation());
         }
         catch (Exception e){
-        Toast.makeText(SecondActivity.this, "plsllslslslslslsls workrkkrkrkrkrkrk", Toast.LENGTH_LONG);
+        Toast.makeText(SecondActivity.this, "plsllslslslslslsls workrkkrkrkrkrkrk", Toast.LENGTH_LONG).show();
         }
 
         // distance
@@ -331,7 +334,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6Ijk3MDdiMTdjYjZlNDBmNDdmYjA0OWQ5NDhiMTVjYjgwMjRjNTdmOGYyMTk2ZjZjODQ1NDFlMDI2MGY4NWQ0NWIyMDYxMmRkYTgzNjNlNGI0IiwiaWF0IjoxNjE5OTM3MDY0LCJuYmYiOjE2MTk5MzcwNjQsImV4cCI6MTYxOTk0MDY2NCwic3ViIjoiIiwic2NvcGVzIjpbXX0.qy65R9o5uNu-KuTFIwCQREiotPQhEn0GnzHglBMh7XvIuaYXe01_gZU52drexw9vMKd69-ehxTPsTy56ajzxDKy0HTQygzDEbyZw2GrSBxJBvhhSo9Tp_gzoGYb-uOGgMMMuM3w72sseXQ5tTgAby7Pm8-0dOAxO4RfTr8fEVwq9vfknxAcxu15Jn0tZfdUEjgZbgHB6uB-FBToQZdbXDvkJ1x2_x6lqTeT7MSeNwHyY7dfJBne-l4ytOFBED7-5lqODUJhHh9MBbWocBp_D3Frn5rtCJBYxOqDYxbqaRJAFP1XIGxcdEQ_u_jA7bRTbA6dVRaTToMuRf6Z3PqGUtA");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjJhODRiM2IxZDk0NTc2ZGE4MzZmM2RlY2NjZWJlNWE4OTIxZjE1YzcwNWM2YmY3MDZjNWI0MDc4ODY3MDA0MjJjODA5MmI4MDAyMWY4YWQ0IiwiaWF0IjoxNjE5OTkwODYwLCJuYmYiOjE2MTk5OTA4NjAsImV4cCI6MTYxOTk5NDQ2MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.AUHhftx-k0GRbsGRYZ6L4a4lUhj0N3AmneyuPFQqOJwYZV1xZQl-eYDqmq2lZSyQtqlSfBvIj8PmU1_mZRa_Zk43Li2MCInh6TSbCQ8QY2miEVkepP7qEGlvr15QC2oNSk_OmAzXE1k1U1oKbSJe8t93glErwQg4VeO16cG-esGWbXky9fokqRfm6fqNIIWyetaNmF38g6NEB6W8RIh6wglY0jDwtyRfl_2WPH_e9IuAzIokpU02xXvX_IJTypiGRBjiGjgzQAcajElGC-twEkZowL-a9UAV6QhNBZm5jLFc4ysjPWK9SMw2XxhR-TCKrv-j0Rt70Y_aeGTG27or_g");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -342,6 +345,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
                     Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
 
                     list_id = new ArrayList<String>();
+                    list_org = new ArrayList<String>();
                     list_type = new ArrayList<String>();
                     list_name = new ArrayList<String>();
                     list_age = new ArrayList<String>();
@@ -356,6 +360,9 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
                         String id = temp.getString("id");
                         list_id.add(id);
+
+                        String org = temp.getString("organization_id");
+                        list_org.add(org);
 
                         String type = temp.getString("type");
                         list_type.add(type);
@@ -385,6 +392,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
                     }
 
                     intent.putStringArrayListExtra("id", (ArrayList<String>) list_id);
+                    intent.putStringArrayListExtra("org", (ArrayList<String>) list_org);
                     intent.putStringArrayListExtra("type", (ArrayList<String>) list_type);
                     intent.putStringArrayListExtra("name", (ArrayList<String>) list_name);
                     intent.putStringArrayListExtra("age", (ArrayList<String>) list_age);

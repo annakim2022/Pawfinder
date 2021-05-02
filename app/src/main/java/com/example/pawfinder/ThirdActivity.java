@@ -65,6 +65,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         Intent intent = getIntent();
 
         ArrayList<String> id = intent.getStringArrayListExtra("id");
+        ArrayList<String> org = intent.getStringArrayListExtra("org");
         ArrayList<String> type = intent.getStringArrayListExtra("type");
         ArrayList<String> name = intent.getStringArrayListExtra("name");
         ArrayList<String> age = intent.getStringArrayListExtra("age");
@@ -76,7 +77,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         textView_nameAct3.setText("Name: " + name.get(0));
         textView_ageAct3.setText("Age: " + age.get(0));
         textView_genderAct3.setText("Gender: " + gender.get(0));
-        // tried to set it to N/A if null but not working LOL
+
         if(distance.get(0).isEmpty()){
             textView_distanceAct3.setText("N/A");
         }else {
@@ -98,7 +99,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             @Override
             public void onClick(View v) {
                 System.out.println(counter);
-                launchNextActivity(counter, id);
+                launchNextActivity(counter, id, org);
             }
         });
 
@@ -216,11 +217,14 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         Picasso.get().load(photos.get(counter)).into(imageView_pet);
     }
 
-    public void launchNextActivity(int counter, ArrayList<String> id){
+    public void launchNextActivity(int counter, ArrayList<String> id, ArrayList<String> org){
         String pet = id.get(counter);
+        String org_1 = org.get(counter);
         Intent intent = new Intent(this, FourthActivity.class);
         intent.putExtra("pet", pet);
+        intent.putExtra("org", org_1);
         System.out.println("THIS IS THE PET ID " + pet);
+        System.out.println("Thi is the org" + org_1);
         startActivity(intent);
     }
 

@@ -1,5 +1,7 @@
 package com.example.pawfinder;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -43,6 +46,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     // brightness
     private SensorManager sensorManager;
     private Sensor lightSensor;
+    private String org;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -89,53 +93,21 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
             }
         });
 
-        /* TODO this is the correct code (hopefully)
-        try {
-            JSONObject json = new JSONObject(new String(responseBody));
-            textView_episode.setText(json.getString("episode").toUpperCase() + " " + json.getString("name").toUpperCase());
-            textView_airDate.setText("Aired On: " + json.getString("air_date"));
-            JSONArray characters = json.getJSONArray("characters");
-            for (int i = 0; i < characters.length(); i++) {
-                imageUrls = new ArrayList<>();
-                imageUrls.add(characters.getString(i));
-                doAnotherThing(imageUrls);
+        button_contactOrg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contactOrganization();
             }
-            createNotificationChannel();
-            String wiki_url = "https://rickandmorty.fandom.com/wiki/" + json.getString("name");
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(wiki_url));
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.notification)
-                    .setContentTitle(json.getString("episode").toUpperCase())
-                    .setContentText("Click here to learn more:")
-                    .setContentIntent(pendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
-
-            button_contactOrg.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    notificationManager.notify(100, builder.build());
-                }
-            });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-        }
-        */
-
+        });
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("pet");
+        org = intent.getStringExtra("org");
 
         String api_url = "https://api.petfinder.com/v2/animals/" + id;
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6Ijk3MDdiMTdjYjZlNDBmNDdmYjA0OWQ5NDhiMTVjYjgwMjRjNTdmOGYyMTk2ZjZjODQ1NDFlMDI2MGY4NWQ0NWIyMDYxMmRkYTgzNjNlNGI0IiwiaWF0IjoxNjE5OTM3MDY0LCJuYmYiOjE2MTk5MzcwNjQsImV4cCI6MTYxOTk0MDY2NCwic3ViIjoiIiwic2NvcGVzIjpbXX0.qy65R9o5uNu-KuTFIwCQREiotPQhEn0GnzHglBMh7XvIuaYXe01_gZU52drexw9vMKd69-ehxTPsTy56ajzxDKy0HTQygzDEbyZw2GrSBxJBvhhSo9Tp_gzoGYb-uOGgMMMuM3w72sseXQ5tTgAby7Pm8-0dOAxO4RfTr8fEVwq9vfknxAcxu15Jn0tZfdUEjgZbgHB6uB-FBToQZdbXDvkJ1x2_x6lqTeT7MSeNwHyY7dfJBne-l4ytOFBED7-5lqODUJhHh9MBbWocBp_D3Frn5rtCJBYxOqDYxbqaRJAFP1XIGxcdEQ_u_jA7bRTbA6dVRaTToMuRf6Z3PqGUtA");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjJhODRiM2IxZDk0NTc2ZGE4MzZmM2RlY2NjZWJlNWE4OTIxZjE1YzcwNWM2YmY3MDZjNWI0MDc4ODY3MDA0MjJjODA5MmI4MDAyMWY4YWQ0IiwiaWF0IjoxNjE5OTkwODYwLCJuYmYiOjE2MTk5OTA4NjAsImV4cCI6MTYxOTk5NDQ2MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.AUHhftx-k0GRbsGRYZ6L4a4lUhj0N3AmneyuPFQqOJwYZV1xZQl-eYDqmq2lZSyQtqlSfBvIj8PmU1_mZRa_Zk43Li2MCInh6TSbCQ8QY2miEVkepP7qEGlvr15QC2oNSk_OmAzXE1k1U1oKbSJe8t93glErwQg4VeO16cG-esGWbXky9fokqRfm6fqNIIWyetaNmF38g6NEB6W8RIh6wglY0jDwtyRfl_2WPH_e9IuAzIokpU02xXvX_IJTypiGRBjiGjgzQAcajElGC-twEkZowL-a9UAV6QhNBZm5jLFc4ysjPWK9SMw2XxhR-TCKrv-j0Rt70Y_aeGTG27or_g");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -313,6 +285,65 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         intent.putExtra("type", type_intent);
 
         startActivity(intent);
+    }
+
+    public void contactOrganization(){
+
+            String api_url_2 = "https://api.petfinder.com/v2/organizations/" + org;
+            System.out.println("THI SI SM ET ESTING THE URL " + api_url_2);
+
+            client.addHeader("Accept", "application/json");
+            client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjJhODRiM2IxZDk0NTc2ZGE4MzZmM2RlY2NjZWJlNWE4OTIxZjE1YzcwNWM2YmY3MDZjNWI0MDc4ODY3MDA0MjJjODA5MmI4MDAyMWY4YWQ0IiwiaWF0IjoxNjE5OTkwODYwLCJuYmYiOjE2MTk5OTA4NjAsImV4cCI6MTYxOTk5NDQ2MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.AUHhftx-k0GRbsGRYZ6L4a4lUhj0N3AmneyuPFQqOJwYZV1xZQl-eYDqmq2lZSyQtqlSfBvIj8PmU1_mZRa_Zk43Li2MCInh6TSbCQ8QY2miEVkepP7qEGlvr15QC2oNSk_OmAzXE1k1U1oKbSJe8t93glErwQg4VeO16cG-esGWbXky9fokqRfm6fqNIIWyetaNmF38g6NEB6W8RIh6wglY0jDwtyRfl_2WPH_e9IuAzIokpU02xXvX_IJTypiGRBjiGjgzQAcajElGC-twEkZowL-a9UAV6QhNBZm5jLFc4ysjPWK9SMw2XxhR-TCKrv-j0Rt70Y_aeGTG27or_g");
+            client.get(api_url_2, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Log.d("api response", new String(responseBody));
+                    try {
+
+                        JSONObject json = new JSONObject(new String(responseBody));
+                        JSONObject organization = json.getJSONObject("organization");
+                        String url = organization.getString("url");
+                        System.out.println(url);
+
+                        createNotificationChannel();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        PendingIntent pendingIntent = PendingIntent.getActivity(FourthActivity.this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(FourthActivity.this, "CHANNEL_ID")
+                                .setAutoCancel(true)
+                                .setSmallIcon(R.drawable.redlightsaber)
+                                .setContentTitle("Contact organization!")
+                                .setContentText("Click here to learn more:")
+                                .setContentIntent(pendingIntent)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(FourthActivity.this);
+
+                        notificationManager.notify(100, builder.build());
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Log.e("api error", new String(responseBody));
+                }
+            });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "name";
+            String description = "dscription";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 
