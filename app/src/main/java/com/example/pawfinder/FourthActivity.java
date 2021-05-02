@@ -1,7 +1,15 @@
 package com.example.pawfinder;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +18,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -19,14 +29,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cz.msebera.android.httpclient.Header;
 
-public class FourthActivity extends AppCompatActivity {
+public class FourthActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextView textView_nameAct4, textView_typeAct4, textView_ageAct4, textView_genderAct4, textView_breedAct4, textView_sizeAct4, textView_colorAct4, textView_coatAct4,
                         textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4;
     private ImageView imaageView_act4;
     private Button button_share, button_backAct4, button_contactOrg;
+
+    // brightness
+    private SensorManager sensorManager;
+    private Sensor lightSensor;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -34,6 +50,10 @@ public class FourthActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fourth);
+
+        // brightness
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         textView_nameAct4 = findViewById(R.id.textView_nameAct4);
         textView_typeAct4 = findViewById(R.id.textView_typeAct4);
@@ -69,15 +89,44 @@ public class FourthActivity extends AppCompatActivity {
             }
         });
 
-        button_contactOrg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // mine isn't correct but I think yours is from homework 3
-                // https://api.petfinder.com/v2/organizations/nj333
-                // this is from the documentation in the petfinder api
-                // not sure why but it isn't working lol
+        /* TODO this is the correct code (hopefully)
+        try {
+            JSONObject json = new JSONObject(new String(responseBody));
+            textView_episode.setText(json.getString("episode").toUpperCase() + " " + json.getString("name").toUpperCase());
+            textView_airDate.setText("Aired On: " + json.getString("air_date"));
+            JSONArray characters = json.getJSONArray("characters");
+            for (int i = 0; i < characters.length(); i++) {
+                imageUrls = new ArrayList<>();
+                imageUrls.add(characters.getString(i));
+                doAnotherThing(imageUrls);
             }
-        });
+            createNotificationChannel();
+            String wiki_url = "https://rickandmorty.fandom.com/wiki/" + json.getString("name");
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(wiki_url));
+            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.notification)
+                    .setContentTitle(json.getString("episode").toUpperCase())
+                    .setContentText("Click here to learn more:")
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+
+            button_contactOrg.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    notificationManager.notify(100, builder.build());
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        */
 
 
         Intent intent = getIntent();
@@ -86,7 +135,7 @@ public class FourthActivity extends AppCompatActivity {
         String api_url = "https://api.petfinder.com/v2/animals/" + id;
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImE2NjNlMzFiMzUwZWZhYjA1OTM5OWM0NTFmNzk3MDg2MDg1YzQ5ZjU1MTk3MmU3ODA0Njg1ZjcwZDBkYzA5ODBkN2YyOGM1ZmNlYzllNzYzIiwiaWF0IjoxNjE5ODEzMjE4LCJuYmYiOjE2MTk4MTMyMTgsImV4cCI6MTYxOTgxNjgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.iVqQpm8yy5o-zhQv8M-SjjMQoi34isfYRGN1jbj5ZnjSYhQGtGqCWxWxm25CUgTSXeDqlTb8YwKqkOGgWCqnkhfZdPrveJszg8_WTe0jIsYyG-zy0uyUex5wvf4t_x6to6X1I2Fmmce5Ebw52LMofn2tUICzA9Ef-6ynf0bNqWVKVOHzcnPIRIrsnPZWNZP1ttufDXXWWy9AsJC6jkNFaTWX1XcDhLK_BLtPq4uAKCseAgSwFbT8EykPrLmpnO1lqOgCPCb_X2JxFFIf5Vc58Zi2QJ07qC_P--R8SlSAQgI8RlosItNduPK5qB0AsZZ2FOY-2kmQoCkgx9i_8m6ESA");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6Ijk3MDdiMTdjYjZlNDBmNDdmYjA0OWQ5NDhiMTVjYjgwMjRjNTdmOGYyMTk2ZjZjODQ1NDFlMDI2MGY4NWQ0NWIyMDYxMmRkYTgzNjNlNGI0IiwiaWF0IjoxNjE5OTM3MDY0LCJuYmYiOjE2MTk5MzcwNjQsImV4cCI6MTYxOTk0MDY2NCwic3ViIjoiIiwic2NvcGVzIjpbXX0.qy65R9o5uNu-KuTFIwCQREiotPQhEn0GnzHglBMh7XvIuaYXe01_gZU52drexw9vMKd69-ehxTPsTy56ajzxDKy0HTQygzDEbyZw2GrSBxJBvhhSo9Tp_gzoGYb-uOGgMMMuM3w72sseXQ5tTgAby7Pm8-0dOAxO4RfTr8fEVwq9vfknxAcxu15Jn0tZfdUEjgZbgHB6uB-FBToQZdbXDvkJ1x2_x6lqTeT7MSeNwHyY7dfJBne-l4ytOFBED7-5lqODUJhHh9MBbWocBp_D3Frn5rtCJBYxOqDYxbqaRJAFP1XIGxcdEQ_u_jA7bRTbA6dVRaTToMuRf6Z3PqGUtA");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -185,6 +234,67 @@ public class FourthActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             }
         });
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        // called when new sensor data is available
+        // you will use this callback most often to handle new sensor data in your app
+        // example: detects a temp change, based on the new sensor data, change the icon/background of your activity
+        // get the change
+        // display the change
+
+        int sensorType = event.sensor.getType();
+            // grab the new data of the sensor
+        if (sensorType == Sensor.TYPE_LIGHT) {
+            float currentValue = event.values[0];
+
+            // methods you can use to grab the maximum value of the range
+            if (currentValue <= lightSensor.getMaximumRange()/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 55);
+            }
+            if (currentValue > lightSensor.getMaximumRange()/3 && currentValue <= (lightSensor.getMaximumRange()*2)/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 155);
+            }
+            if (currentValue > (lightSensor.getMaximumRange()*2)/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 255);
+            }
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // called if the sensor's accuracy is changed so that  your app can react to that change
+        // most of the sensors do not report accuracy changes so most of the time you leave this callback empty
+
+    }
+
+    private void changeScreenBrightness (Context context,int screenBrightnessValue)
+    {
+        // Change the screen brightness change mode to manual.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        // Apply the screen brightness value to the system, this will change the value in Settings ---> Display ---> Brightness level.
+        // It will also change the screen brightness for the device.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, screenBrightnessValue);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     public void launchFourthAct(){

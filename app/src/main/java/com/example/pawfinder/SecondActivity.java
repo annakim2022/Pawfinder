@@ -1,7 +1,19 @@
 package com.example.pawfinder;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,10 +22,21 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -21,25 +44,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity implements SensorEventListener {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     private CheckBox checkBox_cat, checkBox_dog, checkBox_rabbit, checkBox_baby, checkBox_young, checkBox_adult, checkBox_senior, checkBox_female,
-                    checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
-                    checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly, checkBox_yesSpNd, checkBox_noSpNd;
+            checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
+            checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly, checkBox_yesSpNd, checkBox_noSpNd;
 
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs;
     private SeekBar seekBar;
     private Button button_find;
-
-    private EditText editText_location;
     private TextView textView_seekbarDistance;
-
+    private TextView textView_location;
     private List<String> list_id;
     private List<String> list_type;
     private List<String> list_name;
@@ -47,8 +69,14 @@ public class SecondActivity extends AppCompatActivity {
     private List<String> list_gender;
     private List<String> list_photos;
     private List<String> list_distance;
+    // brightness
+    private SensorManager sensorManager;
+    private Sensor lightSensor;
+
+    private FusedLocationProviderClient fusedLocationClient;
 
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,10 +110,25 @@ public class SecondActivity extends AppCompatActivity {
         switch_gwDogs = findViewById(R.id.switch_gwDogs);
         seekBar = findViewById(R.id.seekBar_distance);
         button_find = findViewById(R.id.button_find);
-        editText_location = findViewById(R.id.editText_location);
-        textView_seekbarDistance = findViewById(R.id.textView_seekbarDistance);
 
+        // location
+        textView_location = findViewById(R.id.textView_userLocation);
+        try {
+            textView_location.setText(getLastLocation());
+        }
+        catch (Exception e){
+        Toast.makeText(SecondActivity.this, "plsllslslslslslsls workrkkrkrkrkrkrk", Toast.LENGTH_LONG);
+        }
+
+        // distance
+        textView_seekbarDistance = findViewById(R.id.textView_seekbarDistance);
         textView_seekbarDistance.setText("100");
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // brightness
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
 
         seekFunction();
 
@@ -96,8 +139,78 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        // called when new sensor data is available
+        // you will use this callback most often to handle new sensor data in your app
+        // example: detects a temp change, based on the new sensor data, change the icon/background of your activity
+        // get the change
+        // display the change
+
+        int sensorType = event.sensor.getType();
+            // grab the new data of the sensor
+            if (sensorType == Sensor.TYPE_LIGHT) {
+                float currentValue = event.values[0];
+
+                // range of these sensors are different from each other
+                // 0 to 10000
+                // 0 to 30000
+
+                // methods you can use to grab the maximum value of the range
+                if (currentValue <= lightSensor.getMaximumRange()/3){
+                    // turn on "dark mode"
+                    changeScreenBrightness(this, 55);
+                }
+                if (currentValue > lightSensor.getMaximumRange()/3 && currentValue <= (lightSensor.getMaximumRange()*2)/3){
+                    // turn on "dark mode"
+                    changeScreenBrightness(this, 155);
+                }
+                if (currentValue > (lightSensor.getMaximumRange()*2)/3){
+                    // turn on "dark mode"
+                    changeScreenBrightness(this, 255);
+                }
+            }
+
+
 
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // called if the sensor's accuracy is changed so that  your app can react to that change
+        // most of the sensors do not report accuracy changes so most of the time you leave this callback empty
+
+    }
+
+    private void changeScreenBrightness (Context context,int screenBrightnessValue)
+    {
+        // Change the screen brightness change mode to manual.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        // Apply the screen brightness value to the system, this will change the value in Settings ---> Display ---> Brightness level.
+        // It will also change the screen brightness for the device.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, screenBrightnessValue);
+
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (checkPermissions()) {
+            getLastLocation();
+        }
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
     public void launchNextActivity(View v) {
 
         String api_url = "https://api.petfinder.com/v2/animals?";
@@ -125,7 +238,7 @@ public class SecondActivity extends AppCompatActivity {
         boolean hairlessChecked = checkBox_hairless.isChecked();
         boolean curlyChecked = checkBox_curly.isChecked();
         boolean yesSpNdChecked = checkBox_yesSpNd.isChecked();
-     //   boolean noSpNdChecked = checkBox_noSpNd.isChecked();
+        //   boolean noSpNdChecked = checkBox_noSpNd.isChecked();
         // not sure if this one is necessary
         // some of the things only have a true option
         boolean declawed = switch_declawed.isChecked();
@@ -134,48 +247,91 @@ public class SecondActivity extends AppCompatActivity {
         boolean gwCats = switch_gwCats.isChecked();
         boolean gwDogs = switch_gwDogs.isChecked();
 
-        if(catChecked){ api_url = api_url + "type=cat&"; }
-        if(dogChecked){ api_url = api_url + "type=dog&"; }
-        if(rabbitChecked){ api_url = api_url + "type=rabbit&"; }
-        if(babyChecked){ api_url = api_url + "age=baby&"; }
-        if(youngChecked){ api_url = api_url + "age=young&"; }
-        if(adultChecked){ api_url = api_url + "age=adult&"; }
-        if(seniorChecked){ api_url = api_url + "age=senior&"; }
-        if(femaleChecked){ api_url = api_url + "gender=female&"; }
-        if(maleChecked){ api_url = api_url + "gender=male&"; }
-        if(smallChecked){ api_url = api_url + "size=small&"; }
-        if(medChecked){ api_url = api_url + "size=medium&"; }
-        if(largeChecked){ api_url = api_url + "size=large&"; }
-        if(XLChecked){ api_url = api_url + "size=xlarge&"; }
-        if(shortChecked){ api_url = api_url + "coat=short&"; }
-        if(medHairChecked){ api_url = api_url + "coat=medium&"; }
-        if(longChecked){ api_url = api_url + "coat=long&"; }
-        if(wireChecked){ api_url = api_url + "coat=wire&"; }
-        if(hairlessChecked){ api_url = api_url + "coat=hairless&"; }
-        if(curlyChecked){ api_url = api_url + "coat=curly&"; }
-        if(yesSpNdChecked){ api_url = api_url + "special_needs=1&"; }
-     //   if(noSpNdChecked){ api_url = api_url + "special_needs&"; }
-        if(declawed){ api_url = api_url + "declawed=1&"; }
-        if(houseTrained){ api_url = api_url + "house_trained=1&"; }
-        if(gwChildren){ api_url = api_url + "good_with_children=1&"; }
-        if(gwCats){ api_url = api_url + "good_with_cats=1&"; }
-        if(gwDogs){ api_url = api_url + "good_with_dogs=1&"; }
-
-
-        // need to figure out how to check if the location is correct
-        if(editText_location.getText().toString().isEmpty()){
-            System.out.println("testing");
-        }else{
-            api_url = api_url + "location=" + editText_location.getText().toString() + "&";
+        if (catChecked) {
+            api_url = api_url + "type=cat&";
         }
-        if(editText_location.getText().toString().isEmpty()){
-            System.out.println("just testing some stuff");
-        }else {
-            api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
+        if (dogChecked) {
+            api_url = api_url + "type=dog&";
         }
+        if (rabbitChecked) {
+            api_url = api_url + "type=rabbit&";
+        }
+        if (babyChecked) {
+            api_url = api_url + "age=baby&";
+        }
+        if (youngChecked) {
+            api_url = api_url + "age=young&";
+        }
+        if (adultChecked) {
+            api_url = api_url + "age=adult&";
+        }
+        if (seniorChecked) {
+            api_url = api_url + "age=senior&";
+        }
+        if (femaleChecked) {
+            api_url = api_url + "gender=female&";
+        }
+        if (maleChecked) {
+            api_url = api_url + "gender=male&";
+        }
+        if (smallChecked) {
+            api_url = api_url + "size=small&";
+        }
+        if (medChecked) {
+            api_url = api_url + "size=medium&";
+        }
+        if (largeChecked) {
+            api_url = api_url + "size=large&";
+        }
+        if (XLChecked) {
+            api_url = api_url + "size=xlarge&";
+        }
+        if (shortChecked) {
+            api_url = api_url + "coat=short&";
+        }
+        if (medHairChecked) {
+            api_url = api_url + "coat=medium&";
+        }
+        if (longChecked) {
+            api_url = api_url + "coat=long&";
+        }
+        if (wireChecked) {
+            api_url = api_url + "coat=wire&";
+        }
+        if (hairlessChecked) {
+            api_url = api_url + "coat=hairless&";
+        }
+        if (curlyChecked) {
+            api_url = api_url + "coat=curly&";
+        }
+        if (yesSpNdChecked) {
+            api_url = api_url + "special_needs=1&";
+        }
+        //   if(noSpNdChecked){ api_url = api_url + "special_needs&"; }
+        if (declawed) {
+            api_url = api_url + "declawed=1&";
+        }
+        if (houseTrained) {
+            api_url = api_url + "house_trained=1&";
+        }
+        if (gwChildren) {
+            api_url = api_url + "good_with_children=1&";
+        }
+        if (gwCats) {
+            api_url = api_url + "good_with_cats=1&";
+        }
+        if (gwDogs) {
+            api_url = api_url + "good_with_dogs=1&";
+        }
+        // get location
+        // get distance
+        //api_url = api_url + "location=" + getLastLocation() + "&";
+        api_url = api_url + "location=" + textView_location.getText().toString() + "&";
+        api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
+
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImE2NjNlMzFiMzUwZWZhYjA1OTM5OWM0NTFmNzk3MDg2MDg1YzQ5ZjU1MTk3MmU3ODA0Njg1ZjcwZDBkYzA5ODBkN2YyOGM1ZmNlYzllNzYzIiwiaWF0IjoxNjE5ODEzMjE4LCJuYmYiOjE2MTk4MTMyMTgsImV4cCI6MTYxOTgxNjgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.iVqQpm8yy5o-zhQv8M-SjjMQoi34isfYRGN1jbj5ZnjSYhQGtGqCWxWxm25CUgTSXeDqlTb8YwKqkOGgWCqnkhfZdPrveJszg8_WTe0jIsYyG-zy0uyUex5wvf4t_x6to6X1I2Fmmce5Ebw52LMofn2tUICzA9Ef-6ynf0bNqWVKVOHzcnPIRIrsnPZWNZP1ttufDXXWWy9AsJC6jkNFaTWX1XcDhLK_BLtPq4uAKCseAgSwFbT8EykPrLmpnO1lqOgCPCb_X2JxFFIf5Vc58Zi2QJ07qC_P--R8SlSAQgI8RlosItNduPK5qB0AsZZ2FOY-2kmQoCkgx9i_8m6ESA");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6Ijk3MDdiMTdjYjZlNDBmNDdmYjA0OWQ5NDhiMTVjYjgwMjRjNTdmOGYyMTk2ZjZjODQ1NDFlMDI2MGY4NWQ0NWIyMDYxMmRkYTgzNjNlNGI0IiwiaWF0IjoxNjE5OTM3MDY0LCJuYmYiOjE2MTk5MzcwNjQsImV4cCI6MTYxOTk0MDY2NCwic3ViIjoiIiwic2NvcGVzIjpbXX0.qy65R9o5uNu-KuTFIwCQREiotPQhEn0GnzHglBMh7XvIuaYXe01_gZU52drexw9vMKd69-ehxTPsTy56ajzxDKy0HTQygzDEbyZw2GrSBxJBvhhSo9Tp_gzoGYb-uOGgMMMuM3w72sseXQ5tTgAby7Pm8-0dOAxO4RfTr8fEVwq9vfknxAcxu15Jn0tZfdUEjgZbgHB6uB-FBToQZdbXDvkJ1x2_x6lqTeT7MSeNwHyY7dfJBne-l4ytOFBED7-5lqODUJhHh9MBbWocBp_D3Frn5rtCJBYxOqDYxbqaRJAFP1XIGxcdEQ_u_jA7bRTbA6dVRaTToMuRf6Z3PqGUtA");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -195,7 +351,7 @@ public class SecondActivity extends AppCompatActivity {
 
                     JSONArray animal = json.getJSONArray("animals");
 
-                    for(int i = 0; i < animal.length(); i++){
+                    for (int i = 0; i < animal.length(); i++) {
                         JSONObject temp = animal.getJSONObject(i);
 
                         String id = temp.getString("id");
@@ -218,12 +374,12 @@ public class SecondActivity extends AppCompatActivity {
 
 
                         JSONArray ph_arr = temp.getJSONArray("photos");
-                        if(ph_arr.length() > 0) {
+                        if (ph_arr.length() > 0) {
                             JSONObject te = ph_arr.getJSONObject(0);
                             String testing = te.getString("small");
                             System.out.println("this is testing " + testing);
                             list_photos.add(testing);
-                        }else{
+                        } else {
                             list_photos.add("https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/51202556/2/?bust=1618338275&width=100");
                         }
                     }
@@ -248,6 +404,91 @@ public class SecondActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("MissingPermission")
+    private String getLastLocation() {
+        final String[] userLocation = new String[1];
+        // check if permissions are given
+        if (checkPermissions()) {
+            // check if location is enabled
+            if (isLocationEnabled()) {
+                fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        Location location = task.getResult();
+                        if (location == null) {
+                            requestNewLocationData();
+                        } else {
+                            textView_location.setText(location.getLatitude() + ", " + location.getLongitude());
+                            userLocation[0] = location.getLatitude() + ", " + location.getLongitude();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            // if permissions aren't available,
+            // request for permissions
+            requestPermissions();
+        }
+        return userLocation[0];
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(5);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    private LocationCallback mLocationCallback = new LocationCallback() {
+
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            textView_location.setText(mLastLocation.getLatitude() + ", " + mLastLocation.getLongitude());
+        }
+    };
+
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+    }
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    // If everything is alright then
+    @Override
+    public void
+    onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+    }
+
+
+
     public void seekFunction(){
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -264,13 +505,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
 
-// need to check the location somehow
-    /*
-    private void checkLocation(){
-        editText_location.getText();
-    }
-
-     */
 
 
 }
+

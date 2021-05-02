@@ -1,11 +1,13 @@
 package com.example.pawfinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ThirdActivity extends AppCompatActivity {
+public class ThirdActivity extends AppCompatActivity implements SensorEventListener{
 
 
     private ImageView imageView_pet;
@@ -37,11 +39,19 @@ public class ThirdActivity extends AppCompatActivity {
     private float mAccelCurrent;
     private float mAccelLast;
 
+    // brightness
+    private SensorManager sensorManager;
+    private Sensor lightSensor;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
+
+        // brightness
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         imageView_pet = findViewById(R.id.imageView_pet);
         textView_typeAct3 = findViewById(R.id.textView_typeAct3);
@@ -92,7 +102,6 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
-
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Objects.requireNonNull(mSensorManager).registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
@@ -127,12 +136,69 @@ public class ThirdActivity extends AppCompatActivity {
     protected void onResume() {
         mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
         super.onResume();
     }
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
+        sensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        // called when new sensor data is available
+        // you will use this callback most often to handle new sensor data in your app
+        // example: detects a temp change, based on the new sensor data, change the icon/background of your activity
+        // get the change
+        // display the change
+
+        int sensorType = event.sensor.getType();
+        // grab the new data of the sensor
+        if (sensorType == Sensor.TYPE_LIGHT) {
+            float currentValue = event.values[0];
+
+            // range of these sensors are different from each other
+            // 0 to 10000
+            // 0 to 30000
+
+            // methods you can use to grab the maximum value of the range
+            if (currentValue <= lightSensor.getMaximumRange()/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 55);
+            }
+            if (currentValue > lightSensor.getMaximumRange()/3 && currentValue <= (lightSensor.getMaximumRange()*2)/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 155);
+            }
+            if (currentValue > (lightSensor.getMaximumRange()*2)/3){
+                // turn on "dark mode"
+                changeScreenBrightness(this, 255);
+            }
+        }
+
+
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // called if the sensor's accuracy is changed so that  your app can react to that change
+        // most of the sensors do not report accuracy changes so most of the time you leave this callback empty
+
+    }
+
+    private void changeScreenBrightness (Context context,int screenBrightnessValue)
+    {
+        // Change the screen brightness change mode to manual.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        // Apply the screen brightness value to the system, this will change the value in Settings ---> Display ---> Brightness level.
+        // It will also change the screen brightness for the device.
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, screenBrightnessValue);
+
+
     }
 
 
