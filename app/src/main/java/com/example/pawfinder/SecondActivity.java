@@ -57,6 +57,8 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
             checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly, checkBox_yesSpNd, checkBox_noSpNd;
 
+    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw";
+
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs;
     private SeekBar seekBar;
     private Button button_find;
@@ -332,11 +334,9 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         String location_fix = textView_seekbarDistance.getText().toString().replace(" mi", "");
         api_url = api_url + "location=" + textView_location.getText().toString() + "&";
         api_url = api_url + "distance=" + location_fix + "&";
-   //     api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
-
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw");
+        client.addHeader("Authorization", "Bearer " + token);
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -345,6 +345,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
                     Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+                    intent.putExtra("token", token);
 
                     list_id = new ArrayList<String>();
                     list_org = new ArrayList<String>();

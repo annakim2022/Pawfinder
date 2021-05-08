@@ -36,6 +36,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
     private int counter = 0;
     private List<String> id, org, type, name, age, gender, distance, photos;
 
+    private String token;
 
     private SensorManager mSensorManager;
     private float mAccel;
@@ -75,6 +76,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         distance = new ArrayList<String>();
 
         Intent intent = getIntent();
+        token = intent.getStringExtra("token");
 
         id = intent.getStringArrayListExtra("id");
         org = intent.getStringArrayListExtra("org");
@@ -252,6 +254,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         String pet = id.get(counter);
         String org_1 = org.get(counter);
         Intent intent = new Intent(this, FourthActivity.class);
+        intent.putExtra("token", token);
         intent.putExtra("pet", pet);
         intent.putExtra("org", org_1);
         System.out.println("THIS IS THE PET ID " + pet);

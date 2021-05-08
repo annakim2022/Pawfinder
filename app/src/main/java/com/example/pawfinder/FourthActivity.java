@@ -47,6 +47,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private SensorManager sensorManager;
     private Sensor lightSensor;
     private String org;
+    private String token;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -94,13 +95,14 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         });
 
         Intent intent = getIntent();
+        token = intent.getStringExtra("token");
         String id = intent.getStringExtra("pet");
         org = intent.getStringExtra("org");
 
         String api_url = "https://api.petfinder.com/v2/animals/" + id;
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw");
+        client.addHeader("Authorization", "Bearer " + token);
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -286,7 +288,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
             System.out.println("THI SI SM ET ESTING THE URL " + api_url_2);
 
             client.addHeader("Accept", "application/json");
-            client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw");
+            client.addHeader("Authorization", "Bearer " + token);
             client.get(api_url_2, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
