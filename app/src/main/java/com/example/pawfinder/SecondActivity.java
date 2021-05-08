@@ -329,12 +329,14 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         // get location
         // get distance
         //api_url = api_url + "location=" + getLastLocation() + "&";
+        String location_fix = textView_seekbarDistance.getText().toString().replace(" mi", "");
         api_url = api_url + "location=" + textView_location.getText().toString() + "&";
-        api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
+        api_url = api_url + "distance=" + location_fix + "&";
+   //     api_url = api_url + "distance=" + textView_seekbarDistance.getText().toString() + "&";
 
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjY5MjE2MjJiYzkzNWY1ZTRmYmUyMzM1OTkwZmU2OGM2NGYxNGJlYTE3YWI5NDliZDY2NzFkMzY2NzMwMDVhOGViOTRkMWYwMDk5MDlmMGM2IiwiaWF0IjoxNjIwNTA0OTc2LCJuYmYiOjE2MjA1MDQ5NzYsImV4cCI6MTYyMDUwODU3Niwic3ViIjoiIiwic2NvcGVzIjpbXX0.zpKmcbTSp2Ezx6PZv0kdr_t9JzNlWLg8kO2tLNF9mb0qCGEG3KHMejeXGBaZrQVS1GtpX1CLxtNXrV4JvS8-E2YuEfPKfAlao_1dVJJfVbHtv1hiVBfOXAAD5N4q00_4WWXmD2c4tf3Wv3mZVi2gNLuv3OexQpNxdf85q3UAj1og3d3wOXXTU8RpccADBlHC1RUwTkQo_Ob6xqSnTc6IwmdJdzNwY3owQMcABWBau4lYwLAq_2J3AkFEQhxzXZClX0gWhUaeoUp1Y599HJqm2FRG8Te6TZ3-vkTXDlaNuj0VPzJOJHXS1CBmvQ7VLYBFcw1AAYkKD_33tl5bCEp4aw");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
