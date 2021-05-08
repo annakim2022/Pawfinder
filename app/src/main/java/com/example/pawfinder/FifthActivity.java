@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -32,6 +34,9 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
     // sensor
     private SensorManager sensorManager;
     private Sensor lightSensor;
+
+    private String phoneNo;
+    private String txtMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,8 +68,7 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
             public void onClick(View v) {
 
                 try {
-                    SmsManager smgr = SmsManager.getDefault();
-                    smgr.sendTextMessage(editText_phone.getText().toString(), null, textView_message.getText().toString(), null, null);
+                    sendSMSMessage();
                     Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
                 }catch(Exception e){
                     Toast.makeText(FifthActivity.this, "failed", Toast.LENGTH_SHORT).show();
@@ -84,6 +88,44 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
 
 
     }
+
+    protected void sendSMSMessage() {
+        phoneNo = editText_phone.getText().toString();
+        txtMessage = textView_message.getText().toString();
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        0);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, txtMessage, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
 

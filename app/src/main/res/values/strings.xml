@@ -15,7 +15,7 @@
     <string name="gwChildren">Good with Children: </string>
     <string name="gwCats">Good with Cats: </string>
     <string name="gwDogs">Good with Dogs: </string>
-    <string name="distance">Distance (in miles): </string>
+    <string name="distance">Distance: </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

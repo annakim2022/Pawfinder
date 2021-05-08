@@ -120,12 +120,12 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             textView_location.setText(getLastLocation());
         }
         catch (Exception e){
-        Toast.makeText(SecondActivity.this, "plsllslslslslslsls workrkkrkrkrkrkrk", Toast.LENGTH_LONG).show();
+        //Toast.makeText(SecondActivity.this, "plsllslslslslslsls workrkkrkrkrkrkrk", Toast.LENGTH_LONG).show();
         }
 
         // distance
         textView_seekbarDistance = findViewById(R.id.textView_seekbarDistance);
-        textView_seekbarDistance.setText("100");
+        textView_seekbarDistance.setText("100 mi");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // brightness
@@ -334,7 +334,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
 
         client.addHeader("Accept", "application/json");
-        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjJhODRiM2IxZDk0NTc2ZGE4MzZmM2RlY2NjZWJlNWE4OTIxZjE1YzcwNWM2YmY3MDZjNWI0MDc4ODY3MDA0MjJjODA5MmI4MDAyMWY4YWQ0IiwiaWF0IjoxNjE5OTkwODYwLCJuYmYiOjE2MTk5OTA4NjAsImV4cCI6MTYxOTk5NDQ2MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.AUHhftx-k0GRbsGRYZ6L4a4lUhj0N3AmneyuPFQqOJwYZV1xZQl-eYDqmq2lZSyQtqlSfBvIj8PmU1_mZRa_Zk43Li2MCInh6TSbCQ8QY2miEVkepP7qEGlvr15QC2oNSk_OmAzXE1k1U1oKbSJe8t93glErwQg4VeO16cG-esGWbXky9fokqRfm6fqNIIWyetaNmF38g6NEB6W8RIh6wglY0jDwtyRfl_2WPH_e9IuAzIokpU02xXvX_IJTypiGRBjiGjgzQAcajElGC-twEkZowL-a9UAV6QhNBZm5jLFc4ysjPWK9SMw2XxhR-TCKrv-j0Rt70Y_aeGTG27or_g");
+        client.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjY5MjE2MjJiYzkzNWY1ZTRmYmUyMzM1OTkwZmU2OGM2NGYxNGJlYTE3YWI5NDliZDY2NzFkMzY2NzMwMDVhOGViOTRkMWYwMDk5MDlmMGM2IiwiaWF0IjoxNjIwNTA0OTc2LCJuYmYiOjE2MjA1MDQ5NzYsImV4cCI6MTYyMDUwODU3Niwic3ViIjoiIiwic2NvcGVzIjpbXX0.zpKmcbTSp2Ezx6PZv0kdr_t9JzNlWLg8kO2tLNF9mb0qCGEG3KHMejeXGBaZrQVS1GtpX1CLxtNXrV4JvS8-E2YuEfPKfAlao_1dVJJfVbHtv1hiVBfOXAAD5N4q00_4WWXmD2c4tf3Wv3mZVi2gNLuv3OexQpNxdf85q3UAj1og3d3wOXXTU8RpccADBlHC1RUwTkQo_Ob6xqSnTc6IwmdJdzNwY3owQMcABWBau4lYwLAq_2J3AkFEQhxzXZClX0gWhUaeoUp1Y599HJqm2FRG8Te6TZ3-vkTXDlaNuj0VPzJOJHXS1CBmvQ7VLYBFcw1AAYkKD_33tl5bCEp4aw");
         Log.d("im not sure", api_url);
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
@@ -501,7 +501,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textView_seekbarDistance.setText("" + progress);
+                textView_seekbarDistance.setText(progress + " mi");
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
