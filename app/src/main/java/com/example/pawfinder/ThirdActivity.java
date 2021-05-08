@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ThirdActivity extends AppCompatActivity implements SensorEventListener{
@@ -31,7 +32,9 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
     private ImageView imageView_pet;
     private TextView textView_typeAct3, textView_nameAct3, textView_ageAct3, textView_genderAct3, textView_distanceAct3;
     private Button button_next, button_moreInfo;
+
     private int counter = 0;
+    private List<String> id, org, type, name, age, gender, distance, photos;
 
 
     private SensorManager mSensorManager;
@@ -62,16 +65,25 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         button_next = findViewById(R.id.button_next);
         button_moreInfo = findViewById(R.id.button_moreInfo);
 
+        id = new ArrayList<String>();
+        org = new ArrayList<String>();
+        type = new ArrayList<String>();
+        name = new ArrayList<String>();
+        age = new ArrayList<String>();
+        gender = new ArrayList<String>();
+        photos = new ArrayList<String>();
+        distance = new ArrayList<String>();
+
         Intent intent = getIntent();
 
-        ArrayList<String> id = intent.getStringArrayListExtra("id");
-        ArrayList<String> org = intent.getStringArrayListExtra("org");
-        ArrayList<String> type = intent.getStringArrayListExtra("type");
-        ArrayList<String> name = intent.getStringArrayListExtra("name");
-        ArrayList<String> age = intent.getStringArrayListExtra("age");
-        ArrayList<String> gender = intent.getStringArrayListExtra("gender");
-        ArrayList<String> distance = intent.getStringArrayListExtra("distance");
-        ArrayList<String> photos = intent.getStringArrayListExtra("photo");
+        id = intent.getStringArrayListExtra("id");
+        org = intent.getStringArrayListExtra("org");
+        type = intent.getStringArrayListExtra("type");
+        name = intent.getStringArrayListExtra("name");
+        age = intent.getStringArrayListExtra("age");
+        gender = intent.getStringArrayListExtra("gender");
+        distance = intent.getStringArrayListExtra("distance");
+        photos = intent.getStringArrayListExtra("photo");
 
         textView_typeAct3.setText("Type: " + type.get(0));
         textView_nameAct3.setText("Name: " + name.get(0));
@@ -84,7 +96,6 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             textView_distanceAct3.setText("Distance: " + distance.get(0));
         }
         Picasso.get().load(photos.get(0)).into(imageView_pet);
-
 
 
         button_next.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +121,6 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         mAccelCurrent = SensorManager.GRAVITY_EARTH;
         mAccelLast = SensorManager.GRAVITY_EARTH;
 
-
     }
 
     // implement shake to undo
@@ -126,7 +136,13 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
             if (mAccel > 12) {
-                Toast.makeText(getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                counter --;
+                if(counter < 0){
+                    Toast.makeText(getApplicationContext(), "You are back on the first pet", Toast.LENGTH_LONG).show();
+                }else {
+                    backPet(type, name, age, gender, distance, photos, counter);
+                }
+              //  Toast.makeText(getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
             }
         }
         @Override
@@ -204,7 +220,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
 
 
 
-    public void nextPet(ArrayList<String> type, ArrayList<String> name, ArrayList<String> age, ArrayList<String> gender, ArrayList<String> distance, ArrayList<String> photos, int counter){
+    public void nextPet(List<String> type, List<String> name, List<String> age, List<String> gender, List<String> distance, List<String> photos, int counter){
         textView_typeAct3.setText("Type: " + type.get(counter));
         textView_nameAct3.setText("Name: " + name.get(counter));
         textView_ageAct3.setText("Age: " + age.get(counter));
@@ -217,7 +233,22 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         Picasso.get().load(photos.get(counter)).into(imageView_pet);
     }
 
-    public void launchNextActivity(int counter, ArrayList<String> id, ArrayList<String> org){
+    public void backPet(List<String> type, List<String> name, List<String> age, List<String> gender, List<String> distance, List<String> photos, int counter){
+        textView_typeAct3.setText("Type: " + type.get(counter));
+        textView_nameAct3.setText("Name: " + name.get(counter));
+        textView_ageAct3.setText("Age: " + age.get(counter));
+        textView_genderAct3.setText("Gender: " + gender.get(counter));
+        if(distance.get(counter) == null){
+            textView_distanceAct3.setText("N/A");
+        }else {
+            textView_distanceAct3.setText("Distance: " + distance.get(counter));
+        }
+        Picasso.get().load(photos.get(counter)).into(imageView_pet);
+    }
+
+
+
+    public void launchNextActivity(int counter, List<String> id, List<String> org){
         String pet = id.get(counter);
         String org_1 = org.get(counter);
         Intent intent = new Intent(this, FourthActivity.class);

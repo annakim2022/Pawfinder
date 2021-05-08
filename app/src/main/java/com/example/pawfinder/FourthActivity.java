@@ -320,8 +320,6 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
                         notificationManager.notify(100, builder.build());
 
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -345,6 +343,5 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 
 }
