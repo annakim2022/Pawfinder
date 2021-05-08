@@ -39,7 +39,7 @@ import cz.msebera.android.httpclient.Header;
 public class FourthActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextView textView_nameAct4, textView_typeAct4, textView_ageAct4, textView_genderAct4, textView_breedAct4, textView_sizeAct4, textView_colorAct4, textView_coatAct4,
-                        textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4;
+                        textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4, textView_descriptionAct4;
     private ImageView imaageView_act4;
     private Button button_share, button_contactOrg;
 
@@ -75,6 +75,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         textView_gwCatsAct4 = findViewById(R.id.textView_gwCatsAct4);
         textView_gwDogsAct4 = findViewById(R.id.textView_gwDogsAct4);
         imaageView_act4 = findViewById(R.id.imageView_act4);
+        textView_descriptionAct4 = findViewById(R.id.textView_descriptionAct4);
 
         button_share = findViewById(R.id.button_share);
         button_contactOrg = findViewById(R.id.button_contactOrg);
@@ -115,6 +116,10 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
                     String name = animal.getString("name");
                     textView_nameAct4.setText(name);
+
+                    // description information
+                    String description = animal.getString("description");
+                    textView_descriptionAct4.setText("Description: " + description);
 
                     JSONArray photo_arr = animal.getJSONArray("photos");
                     if(photo_arr.length() > 0){

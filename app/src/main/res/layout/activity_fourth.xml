@@ -35,6 +35,12 @@
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textView_descriptionAct4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+
             <ImageView
                 android:id="@+id/imageView_act4"
                 android:layout_width="200dp"
