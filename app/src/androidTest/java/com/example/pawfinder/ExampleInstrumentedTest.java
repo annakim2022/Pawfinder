@@ -38,14 +38,5 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.pawfinder", appContext.getPackageName());
     }
 
-    @Test
-    public void incorrectLocation(){
-
-        onView(withId((R.id.editText_location))).perform(typeText(""));
-        onView(withId(R.id.button_find)).perform(click());
-        onView(withId(R.id.textView_distanceAct3)).check(matches(withText("N/A")));
-
-    }
-
 
 }

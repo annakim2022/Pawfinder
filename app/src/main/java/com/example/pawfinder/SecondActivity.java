@@ -57,7 +57,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
             checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly;
 
-    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw";
+    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjY1ZTRhNGVhNDcwNWNmMGEyNWUxNjI0YWIxNTg0NWY2ZWIzMzYwNWIzOTA0MDY0YzFkNDc4ODg0ODgxMGE2ZGU5NjE1YmUxNzYyOTk5YjZjIiwiaWF0IjoxNjIwNTExMTQxLCJuYmYiOjE2MjA1MTExNDEsImV4cCI6MTYyMDUxNDc0MSwic3ViIjoiIiwic2NvcGVzIjpbXX0.KleDGesA4_lrWUCMG7J3mWxhHd1mi9WEjN_FEJMCrsr7z1SKGtGDRm0J0jY0_cQU2CEYhwMDKqMRT31wXSpk6H4vXri6weFplvCx24lci0FWd_lGsfJkJt0kXnOtfEqXApH3ma9YHU3VMj20ReKz2i7ufQWbDGeuL4U-cjY4hjBeebHsy60hTDRmGpb3XbhQi08jrFibSWXTigxyfRP-xW9QNcSVveD8YBgMhQxAWpoYKL3svZFe5ah1myuJs9pihVAjjIQXY65vUfXo6G4VEAcTA1jcT7m3VXsPAKpeUZDfeTqguicIWfBarL6nTb-meBDrP6783fB3BnQzM5xVaA";
 
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs, switch_specialNeeds;
     private SeekBar seekBar;
@@ -389,7 +389,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
                             System.out.println("this is testing " + testing);
                             list_photos.add(testing);
                         } else {
-                            list_photos.add("https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/51202556/2/?bust=1618338275&width=100");
+                            list_photos.add("https://www.dogster.com/wp-content/uploads/2015/05/dog-http-status-codes-404.jpg");
                         }
                     }
 

@@ -310,7 +310,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
                         PendingIntent pendingIntent = PendingIntent.getActivity(FourthActivity.this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(FourthActivity.this, "CHANNEL_ID")
                                 .setAutoCancel(true)
-                                .setSmallIcon(R.drawable.redlightsaber)
+                                .setSmallIcon(R.drawable.paw)
                                 .setContentTitle("Contact organization!")
                                 .setContentText("Click here to learn more:")
                                 .setContentIntent(pendingIntent)
