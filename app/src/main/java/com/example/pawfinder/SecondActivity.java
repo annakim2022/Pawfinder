@@ -55,11 +55,11 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
     private CheckBox checkBox_cat, checkBox_dog, checkBox_rabbit, checkBox_baby, checkBox_young, checkBox_adult, checkBox_senior, checkBox_female,
             checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
-            checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly, checkBox_yesSpNd, checkBox_noSpNd;
+            checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly;
 
     private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6ImI0YTMzZjkxMmRmM2YzZjdhM2UxNGM3YTVlMzE1MTIyOWViZjMxNzg0MGRmYTUxNzJlNzNhMmUyYmNmZjM0ZmE3Y2IwMDg3Y2Q1YzMxZjcwIiwiaWF0IjoxNjIwNTA2MTUyLCJuYmYiOjE2MjA1MDYxNTIsImV4cCI6MTYyMDUwOTc1Miwic3ViIjoiIiwic2NvcGVzIjpbXX0.q-KGxJyWNOSeecnG6w6uffjV7T9aoW3tqXSpLolP5iT9GGHRrnuS3nSZvLubwNN8hf9qHwvSlHCYNUfu2YElij6pQXW_DFO_7EreFz7npeHj5B68nmiLxAxMuWS849mt3SJsI60bKRzQ_2T03KLtu_NZd5g1gvU-79XqMcpWOPvzYd3BhjGI2fgm-7SNn2c3DPp5B3t_YC3uuVXkvOpQiTo-EGWwpSthjynUztsdbQiRLgT1eJA7eZrJkieSsVx_Mk0KlTHwW2Y4JT5wMt2aiC7UqPvz6F6Amu8vOd6oCEhL_dO__VQQWnyfRiP4x93xahO4uydvQomIqKSXzzZdxw";
 
-    private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs;
+    private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs, switch_specialNeeds;
     private SeekBar seekBar;
     private Button button_find;
     private TextView textView_seekbarDistance;
@@ -106,8 +106,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         checkBox_wire = findViewById(R.id.checkBox_wire);
         checkBox_hairless = findViewById(R.id.checkBox_hairless);
         checkBox_curly = findViewById(R.id.checkBox_curly);
-        checkBox_yesSpNd = findViewById(R.id.checkBox_yesSpNd);
-        checkBox_noSpNd = findViewById(R.id.checkBox_noSpNd);
+        switch_specialNeeds = findViewById(R.id.switch_specialNeeds);
         switch_declawed = findViewById(R.id.switch_declawed);
         switch_houseTrained = findViewById(R.id.switch_houseTrained);
         switch_gwChildren = findViewById(R.id.switch_gwChildren);
@@ -242,10 +241,10 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean wireChecked = checkBox_wire.isChecked();
         boolean hairlessChecked = checkBox_hairless.isChecked();
         boolean curlyChecked = checkBox_curly.isChecked();
-        boolean yesSpNdChecked = checkBox_yesSpNd.isChecked();
         //   boolean noSpNdChecked = checkBox_noSpNd.isChecked();
         // not sure if this one is necessary
         // some of the things only have a true option
+        boolean yesSpNdChecked =  switch_specialNeeds.isChecked();
         boolean declawed = switch_declawed.isChecked();
         boolean houseTrained = switch_houseTrained.isChecked();
         boolean gwChildren = switch_gwChildren.isChecked();

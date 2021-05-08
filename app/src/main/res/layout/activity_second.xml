@@ -370,20 +370,13 @@
                     android:layout_marginEnd="10sp"
                     android:text="@string/specialNeeds"
                     android:textSize="18sp" />
-
-                <CheckBox
-                    android:id="@+id/checkBox_yesSpNd"
+                <Switch
+                    android:id="@+id/switch_specialNeeds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10sp"
-                    android:text="@string/yes" />
+                    android:layout_marginEnd="100sp"
+                    android:layout_weight="1" />
 
-                <CheckBox
-                    android:id="@+id/checkBox_noSpNd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10sp"
-                    android:text="@string/no" />
 
             </LinearLayout>
 
