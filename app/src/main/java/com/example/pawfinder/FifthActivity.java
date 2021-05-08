@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat;
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
     private Button button_backToMain, button_shareAct5;
-    private TextView textView_phoneText, textView_message;
+    private TextView textView_message;
     private EditText editText_phone;
 
     // sensor
@@ -49,7 +49,6 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
 
         button_backToMain = findViewById(R.id.button_backToMain);
         button_shareAct5 = findViewById(R.id.button_shareAct5);
-        textView_phoneText = findViewById(R.id.textView_phoneText);
         textView_message = findViewById(R.id.textView_message);
         editText_phone = findViewById(R.id.editText_phone);
 
@@ -71,7 +70,7 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
                     sendSMSMessage();
                     Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
                 }catch(Exception e){
-                    Toast.makeText(FifthActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FifthActivity.this, "please check phone number format", Toast.LENGTH_SHORT).show();
                 }
 
 

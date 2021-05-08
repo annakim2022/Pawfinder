@@ -119,7 +119,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
                     // description information
                     String description = animal.getString("description");
-                    textView_descriptionAct4.setText("Description: " + description);
+                    textView_descriptionAct4.setText("" + description);
 
                     JSONArray photo_arr = animal.getJSONArray("photos");
                     if(photo_arr.length() > 0){

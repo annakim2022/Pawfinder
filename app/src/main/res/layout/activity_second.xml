@@ -374,7 +374,7 @@
                     android:id="@+id/switch_specialNeeds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
 
@@ -398,7 +398,7 @@
                     android:id="@+id/switch_declawed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
 
@@ -422,7 +422,7 @@
                     android:id="@+id/switch_houseTrained"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
             </LinearLayout>
@@ -446,7 +446,7 @@
                     android:id="@+id/switch_gwChildren"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
             </LinearLayout>
@@ -469,7 +469,7 @@
                     android:id="@+id/switch_gwCats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
 
@@ -493,7 +493,7 @@
                     android:id="@+id/switch_gwDogs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="100sp"
+                    android:layout_marginEnd="50sp"
                     android:layout_weight="1" />
 
             </LinearLayout>

@@ -258,7 +258,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         intent.putExtra("pet", pet);
         intent.putExtra("org", org_1);
         System.out.println("THIS IS THE PET ID " + pet);
-        System.out.println("Thi is the org" + org_1);
+        System.out.println("This is the org" + org_1);
         startActivity(intent);
     }
 
