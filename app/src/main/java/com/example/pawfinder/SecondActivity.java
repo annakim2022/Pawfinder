@@ -57,7 +57,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
             checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly;
 
-    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjY1ZTRhNGVhNDcwNWNmMGEyNWUxNjI0YWIxNTg0NWY2ZWIzMzYwNWIzOTA0MDY0YzFkNDc4ODg0ODgxMGE2ZGU5NjE1YmUxNzYyOTk5YjZjIiwiaWF0IjoxNjIwNTExMTQxLCJuYmYiOjE2MjA1MTExNDEsImV4cCI6MTYyMDUxNDc0MSwic3ViIjoiIiwic2NvcGVzIjpbXX0.KleDGesA4_lrWUCMG7J3mWxhHd1mi9WEjN_FEJMCrsr7z1SKGtGDRm0J0jY0_cQU2CEYhwMDKqMRT31wXSpk6H4vXri6weFplvCx24lci0FWd_lGsfJkJt0kXnOtfEqXApH3ma9YHU3VMj20ReKz2i7ufQWbDGeuL4U-cjY4hjBeebHsy60hTDRmGpb3XbhQi08jrFibSWXTigxyfRP-xW9QNcSVveD8YBgMhQxAWpoYKL3svZFe5ah1myuJs9pihVAjjIQXY65vUfXo6G4VEAcTA1jcT7m3VXsPAKpeUZDfeTqguicIWfBarL6nTb-meBDrP6783fB3BnQzM5xVaA";
+    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjBjODk1YmNkYjdjOWY0MzM3ZjkyZjZjNDI5OGU2OGQzMGY5NzVhY2E2NzliNzNjZDQ3MTEwYzYzNzNhYjRmMjVlZWQ0N2MzZjYxMTlmODc0IiwiaWF0IjoxNjIwNTE0OTY3LCJuYmYiOjE2MjA1MTQ5NjcsImV4cCI6MTYyMDUxODU2Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.gBBAKEAaIRGWi0HIF8BQd9PneuQ-LcOZJKkVhVbw38nXfRefklLyiM2jNdQAp9Jfv05SAdyx-5FPKNoMCzc9k_XqkZG6vGJFg47Vrs_ZKuArTf5h_B-osHYB77gT21OLKRqeyyMjOJiVljA7UDVP1S_MrgYoJbO1MuMzN5Mcw6Ow1PSspKKV3wPtDiIys6lJ0ztvelfzKAkIN-gXvx6fjp4Dd-D2UJiWxZJRexjKMZakemvdS7RyI6xHbbjFSXiTtCP7K-BAGUPHhKUDgbBI1kgIFkHxEbUgAOaGThMsbTK4iHAFw7EleIMNiL4gIberohMavaUYMH2STvBVxWOhdA";
 
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs, switch_specialNeeds;
     private SeekBar seekBar;
@@ -222,6 +222,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean catChecked = checkBox_cat.isChecked();
         boolean dogChecked = checkBox_dog.isChecked();
         boolean rabbitChecked = checkBox_rabbit.isChecked();
+
         // for these three ^^ if all or more than one checked only returns one, should have something that says that/ confirms it
         // should have something that says pick one
 
@@ -241,7 +242,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean wireChecked = checkBox_wire.isChecked();
         boolean hairlessChecked = checkBox_hairless.isChecked();
         boolean curlyChecked = checkBox_curly.isChecked();
-        //   boolean noSpNdChecked = checkBox_noSpNd.isChecked();
+        // boolean noSpNdChecked = checkBox_noSpNd.isChecked();
         // not sure if this one is necessary
         // some of the things only have a true option
         boolean yesSpNdChecked =  switch_specialNeeds.isChecked();
@@ -252,12 +253,18 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean gwDogs = switch_gwDogs.isChecked();
 
         if (catChecked) {
+            checkBox_dog.toggle();
+            checkBox_rabbit.toggle();
             api_url = api_url + "type=cat&";
         }
         if (dogChecked) {
+            checkBox_cat.toggle();
+            checkBox_rabbit.toggle();
             api_url = api_url + "type=dog&";
         }
         if (rabbitChecked) {
+            checkBox_dog.toggle();
+            checkBox_cat.toggle();
             api_url = api_url + "type=rabbit&";
         }
         if (babyChecked) {
@@ -337,6 +344,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", "Bearer " + token);
         Log.d("im not sure", api_url);
+
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

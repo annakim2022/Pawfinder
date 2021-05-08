@@ -25,6 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
     private Button button_backToMain, button_shareAct5;
@@ -55,26 +58,25 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
-
         String type_updated = type.replace("Type: ", "");
 
-        textView_message.setText("Message: Hey, check out this " + type_updated + "! His/Her name is " + name + " and I'm " +
-                "thinking about adopting him/her. Let me know what you think!");
+        textView_message.setText("Message: Hey, check out this " + type_updated + "! Their name is " + name + " and I'm " +
+                "thinking about adopting them. Let me know what you think!");
         // just a thought we can also send the gender as an intent ^^ later problem
 
         button_shareAct5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                try {
+                if (editText_phone.getText().toString().length() == 10){
                     sendSMSMessage();
-                    Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
-                }catch(Exception e){
-                    Toast.makeText(FifthActivity.this, "please check phone number format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FifthActivity.this, "message sent", Toast.LENGTH_LONG).show();
                 }
-
-
+                else {
+                    Toast.makeText(FifthActivity.this, "input 10 digits only", Toast.LENGTH_SHORT).show();
+                }
             }
+
         });
 
 
@@ -180,6 +182,7 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         super.onResume();
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -197,3 +200,4 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
 
 
 }
+

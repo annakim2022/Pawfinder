@@ -40,7 +40,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
     private TextView textView_nameAct4, textView_typeAct4, textView_ageAct4, textView_genderAct4, textView_breedAct4, textView_sizeAct4, textView_colorAct4, textView_coatAct4,
                         textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4, textView_descriptionAct4;
-    private ImageView imaageView_act4;
+    private ImageView imageView_act4;
     private Button button_share, button_contactOrg;
 
     // brightness
@@ -74,7 +74,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         textView_gwChildrenAct4 = findViewById(R.id.textView_gwChildrenAct4);
         textView_gwCatsAct4 = findViewById(R.id.textView_gwCatsAct4);
         textView_gwDogsAct4 = findViewById(R.id.textView_gwDogsAct4);
-        imaageView_act4 = findViewById(R.id.imageView_act4);
+        imageView_act4 = findViewById(R.id.imageView_act4);
         textView_descriptionAct4 = findViewById(R.id.textView_descriptionAct4);
 
         button_share = findViewById(R.id.button_share);
@@ -126,7 +126,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
                         JSONObject photo_obj = photo_arr.getJSONObject(0);
                         String photo_string = photo_obj.getString("small");
                         if(photo_string != null){
-                            Picasso.get().load(photo_string).into(imaageView_act4);
+                            Picasso.get().load(photo_string).into(imageView_act4);
                         }
                     }
 
@@ -335,7 +335,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "name";
-            String description = "dscription";
+            String description = "description";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
             channel.setDescription(description);
