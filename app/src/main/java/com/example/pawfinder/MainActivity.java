@@ -33,10 +33,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // sensor for brightness
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-
+/*
         if (lightSensor == null) {
             textView.setText("Light sensor not found.");
         }
+ */
 
         button_start = findViewById(R.id.button_start);
         button_start.setOnClickListener(new View.OnClickListener() {
@@ -73,33 +74,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             changeWriteSettingsPermission(this);
         }
         else {
-            // called when new sensor data is available
-            // you will use this callback most often to handle new sensor data in your app
-            // example: detects a temp change, based on the new sensor data, change the icon/background of your activity
-            // get the change
-            // display the change
 
             int sensorType = event.sensor.getType();
             // grab the new data of the sensor
             if (sensorType == Sensor.TYPE_LIGHT) {
                 float currentValue = event.values[0];
-                textView.setText("light sensor value " + currentValue + "\nmax range: " + lightSensor.getMaximumRange());
+                //textView.setText("light sensor value " + currentValue + "\nmax range: " + lightSensor.getMaximumRange());
 
-                // range of these sensors are different from each other
-                // 0 to 10000
-                // 0 to 30000
-
-                // methods you can use to grab the maximum value of the range
+                // light range
                 if (currentValue <= lightSensor.getMaximumRange()/3){
-                    // turn on "dark mode"
                     changeScreenBrightness(this, 55);
                 }
                 if (currentValue > lightSensor.getMaximumRange()/3 && currentValue <= (lightSensor.getMaximumRange()*2)/3){
-                    // turn on "dark mode"
                     changeScreenBrightness(this, 155);
                 }
                 if (currentValue > (lightSensor.getMaximumRange()*2)/3){
-                    // turn on "dark mode"
                     changeScreenBrightness(this, 255);
                 }
             }
