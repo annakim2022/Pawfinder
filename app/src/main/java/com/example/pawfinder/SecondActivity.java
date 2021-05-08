@@ -198,7 +198,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
     }
 
-
+//// trying to commit
     @Override
     protected void onPause() {
         super.onPause();
