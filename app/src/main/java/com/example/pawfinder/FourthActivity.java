@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -40,7 +41,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
     private TextView textView_nameAct4, textView_typeAct4, textView_ageAct4, textView_genderAct4, textView_breedAct4, textView_sizeAct4, textView_colorAct4, textView_coatAct4,
                         textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4, textView_descriptionAct4;
-    private ImageView imageView_act4;
+    private ImageView imaageView_act4;
     private Button button_share, button_contactOrg;
 
     // brightness
@@ -48,6 +49,8 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private Sensor lightSensor;
     private String org;
     private String token;
+
+    private ArrayList<String> url;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -74,11 +77,13 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         textView_gwChildrenAct4 = findViewById(R.id.textView_gwChildrenAct4);
         textView_gwCatsAct4 = findViewById(R.id.textView_gwCatsAct4);
         textView_gwDogsAct4 = findViewById(R.id.textView_gwDogsAct4);
-        imageView_act4 = findViewById(R.id.imageView_act4);
+        imaageView_act4 = findViewById(R.id.imageView_act4);
         textView_descriptionAct4 = findViewById(R.id.textView_descriptionAct4);
 
         button_share = findViewById(R.id.button_share);
         button_contactOrg = findViewById(R.id.button_contactOrg);
+
+        url = new ArrayList<String>();
 
 
         button_share.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +115,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("api response", new String(responseBody));
                 try {
+
                     JSONObject json = new JSONObject(new String(responseBody));
                     // type, age, gender, breed, size, color, coat, declawed, house trained, special needs, good with children, good with cats, good with dogs, location
                     JSONObject animal = json.getJSONObject("animal");
@@ -121,12 +127,18 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
                     String description = animal.getString("description");
                     textView_descriptionAct4.setText("" + description);
 
+
+                    url = new ArrayList<String>();
+                    String url_string = animal.getString("url");
+                    url.add(url_string);
+
+
                     JSONArray photo_arr = animal.getJSONArray("photos");
                     if(photo_arr.length() > 0){
                         JSONObject photo_obj = photo_arr.getJSONObject(0);
                         String photo_string = photo_obj.getString("small");
                         if(photo_string != null){
-                            Picasso.get().load(photo_string).into(imageView_act4);
+                            Picasso.get().load(photo_string).into(imaageView_act4);
                         }
                     }
 
@@ -284,6 +296,8 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         String type_intent = textView_typeAct4.getText().toString();
         intent.putExtra("type", type_intent);
 
+        intent.putStringArrayListExtra("url", url);
+
         startActivity(intent);
     }
 
@@ -335,7 +349,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "name";
-            String description = "description";
+            String description = "dscription";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
             channel.setDescription(description);

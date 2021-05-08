@@ -222,7 +222,6 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean catChecked = checkBox_cat.isChecked();
         boolean dogChecked = checkBox_dog.isChecked();
         boolean rabbitChecked = checkBox_rabbit.isChecked();
-
         // for these three ^^ if all or more than one checked only returns one, should have something that says that/ confirms it
         // should have something that says pick one
 
@@ -242,7 +241,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean wireChecked = checkBox_wire.isChecked();
         boolean hairlessChecked = checkBox_hairless.isChecked();
         boolean curlyChecked = checkBox_curly.isChecked();
-        // boolean noSpNdChecked = checkBox_noSpNd.isChecked();
+        //   boolean noSpNdChecked = checkBox_noSpNd.isChecked();
         // not sure if this one is necessary
         // some of the things only have a true option
         boolean yesSpNdChecked =  switch_specialNeeds.isChecked();
@@ -253,18 +252,12 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean gwDogs = switch_gwDogs.isChecked();
 
         if (catChecked) {
-            checkBox_dog.toggle();
-            checkBox_rabbit.toggle();
             api_url = api_url + "type=cat&";
         }
         if (dogChecked) {
-            checkBox_cat.toggle();
-            checkBox_rabbit.toggle();
             api_url = api_url + "type=dog&";
         }
         if (rabbitChecked) {
-            checkBox_dog.toggle();
-            checkBox_cat.toggle();
             api_url = api_url + "type=rabbit&";
         }
         if (babyChecked) {
@@ -344,7 +337,6 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", "Bearer " + token);
         Log.d("im not sure", api_url);
-
         client.get(api_url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

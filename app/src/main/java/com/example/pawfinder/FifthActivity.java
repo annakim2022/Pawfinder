@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,10 +59,11 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
+        ArrayList<String> url = intent.getStringArrayListExtra("url");
         String type_updated = type.replace("Type: ", "");
 
         textView_message.setText("Message: Hey, check out this " + type_updated + "! Their name is " + name + " and I'm " +
-                "thinking about adopting them. Let me know what you think!");
+                "thinking about adopting them. Let me know what you think! " + url.get(0));
         // just a thought we can also send the gender as an intent ^^ later problem
 
         button_shareAct5.setOnClickListener(new View.OnClickListener() {
