@@ -41,7 +41,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private TextView textView_nameAct4, textView_typeAct4, textView_ageAct4, textView_genderAct4, textView_breedAct4, textView_sizeAct4, textView_colorAct4, textView_coatAct4,
                         textView_declawedAct4, textView_houseTrainedAct4, textView_specialNeedsAct4, textView_gwChildrenAct4, textView_gwCatsAct4, textView_gwDogsAct4;
     private ImageView imaageView_act4;
-    private Button button_share, button_backAct4, button_contactOrg;
+    private Button button_share, button_contactOrg;
 
     // brightness
     private SensorManager sensorManager;
@@ -76,15 +76,8 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         imaageView_act4 = findViewById(R.id.imageView_act4);
 
         button_share = findViewById(R.id.button_share);
-        button_backAct4 = findViewById(R.id.button_backAct4);
         button_contactOrg = findViewById(R.id.button_contactOrg);
 
-        button_backAct4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchFourthAct();
-            }
-        });
 
         button_share.setOnClickListener(new View.OnClickListener() {
             @Override

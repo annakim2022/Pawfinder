@@ -25,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
-    private Button button_backAct5, button_backToMain, button_shareAct5;
+    private Button button_backToMain, button_shareAct5;
     private TextView textView_phoneText, textView_message;
     private EditText editText_phone;
 
@@ -42,7 +42,6 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        button_backAct5 = findViewById(R.id.button_backAct5);
         button_backToMain = findViewById(R.id.button_backToMain);
         button_shareAct5 = findViewById(R.id.button_shareAct5);
         textView_phoneText = findViewById(R.id.textView_phoneText);
@@ -75,12 +74,7 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
             }
         });
 
-        button_backAct5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToFourth();
-            }
-        });
+
         button_backToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
