@@ -128,7 +128,13 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
 
                     // description information
                     String description = animal.getString("description");
-                    textView_descriptionAct4.setText("" + description);
+                    if (description == null){
+                        textView_descriptionAct4.setText("description not found");
+                    }
+                    else{
+                        textView_descriptionAct4.setText("" + description);
+                    }
+
 
 
                     url = new ArrayList<String>();

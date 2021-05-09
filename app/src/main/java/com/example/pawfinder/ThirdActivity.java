@@ -95,7 +95,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         if(distance.get(0).isEmpty()){
             textView_distanceAct3.setText("N/A");
         }else {
-            textView_distanceAct3.setText("Distance: " + distance.get(0));
+            textView_distanceAct3.setText("Distance: " + distance.get(0) + " mi");
         }
         Picasso.get().load(photos.get(0)).into(imageView_pet);
 
@@ -230,7 +230,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         if(distance.get(counter) == null){
             textView_distanceAct3.setText("N/A");
         }else {
-            textView_distanceAct3.setText("Distance: " + distance.get(counter));
+            textView_distanceAct3.setText("Distance: " + distance.get(counter) + " mi");
         }
         Picasso.get().load(photos.get(counter)).into(imageView_pet);
     }
