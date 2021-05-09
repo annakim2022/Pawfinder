@@ -108,7 +108,6 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         photo = intent.getStringExtra("photo");
         Picasso.get().load(photo).into(imaageView_act4);
 
-
         String api_url = "https://api.petfinder.com/v2/animals/" + id;
 
         client.addHeader("Accept", "application/json");
@@ -135,6 +134,18 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
                     url = new ArrayList<String>();
                     String url_string = animal.getString("url");
                     url.add(url_string);
+
+/*
+                    JSONArray photo_arr = animal.getJSONArray("photos");
+                    if(photo_arr.length() > 0){
+                        JSONObject photo_obj = photo_arr.getJSONObject(0);
+                        String photo_string = photo_obj.getString("small");
+                        if(photo_string != null){
+                            Picasso.get().load(photo_string).into(imaageView_act4);
+                        }
+                        }
+
+ */
 
 
                     // type info
@@ -344,7 +355,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "name";
-            String description = "dscription";
+            String description = "description";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
             channel.setDescription(description);

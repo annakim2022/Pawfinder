@@ -25,22 +25,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
     private Button button_backToMain, button_shareAct5;
-    private TextView textView_message;
+    private TextView textView_phoneText, textView_message;
     private EditText editText_phone;
+
+    private String phoneNo;
+    private String message;
 
     // sensor
     private SensorManager sensorManager;
     private Sensor lightSensor;
-
-    private String phoneNo;
-    private String txtMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,32 +49,50 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
 
         button_backToMain = findViewById(R.id.button_backToMain);
         button_shareAct5 = findViewById(R.id.button_shareAct5);
+        textView_phoneText = findViewById(R.id.textView_phoneText);
         textView_message = findViewById(R.id.textView_message);
         editText_phone = findViewById(R.id.editText_phone);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
-        ArrayList<String> url = intent.getStringArrayListExtra("url");
+
         String type_updated = type.replace("Type: ", "");
 
-        textView_message.setText("Message: Hey, check out this " + type_updated + "! Their name is " + name + " and I'm " +
-                "thinking about adopting them. Let me know what you think! " + url.get(0));
+        textView_message.setText("Message: Hey, check out this " + type_updated + "! His/Her name is " + name + " and I'm " +
+                "thinking about adopting him/her. Let me know what you think!");
         // just a thought we can also send the gender as an intent ^^ later problem
 
         button_shareAct5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (editText_phone.getText().toString().length() == 10){
-                    sendSMSMessage();
-                    Toast.makeText(FifthActivity.this, "message sent", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(FifthActivity.this, "input 10 digits only", Toast.LENGTH_SHORT).show();
-                }
-            }
+                try {
 
+                    phoneNo = editText_phone.getText().toString();
+                    message = textView_message.getText().toString();
+
+                    if (ContextCompat.checkSelfPermission(FifthActivity.this,
+                            Manifest.permission.SEND_SMS)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(FifthActivity.this,
+                                Manifest.permission.SEND_SMS)) {
+                        } else {
+                            ActivityCompat.requestPermissions(FifthActivity.this,
+                                    new String[]{Manifest.permission.SEND_SMS},
+                                    0);
+                        }
+                    }
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                    Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
+
+                }catch(Exception e){
+                    Toast.makeText(FifthActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
         });
 
 
@@ -89,24 +103,6 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
             }
         });
 
-
-    }
-
-    protected void sendSMSMessage() {
-        phoneNo = editText_phone.getText().toString();
-        txtMessage = textView_message.getText().toString();
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        0);
-            }
-        }
     }
 
     @Override
@@ -116,12 +112,12 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNo, null, txtMessage, null, null);
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
                     Toast.makeText(getApplicationContext(), "SMS sent.",
                             Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
@@ -184,7 +180,6 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         super.onResume();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -202,4 +197,3 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
 
 
 }
-
