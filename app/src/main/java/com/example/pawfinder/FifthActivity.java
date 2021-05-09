@@ -70,7 +70,6 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
             public void onClick(View v) {
 
                 try {
-
                     phoneNo = editText_phone.getText().toString();
                     message = textView_message.getText().toString();
 
@@ -85,13 +84,18 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
                                     0);
                         }
                     }
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                    smsManager.sendTextMessage(phoneNo, null, url.get(0), null, null);
-                    Toast.makeText(FifthActivity.this, "message sent", Toast.LENGTH_LONG).show();
+                    if (phoneNo.length() == 10) {
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                        smsManager.sendTextMessage(phoneNo, null, url.get(0), null, null);
+                        Toast.makeText(FifthActivity.this, "message sent", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(FifthActivity.this, "input must be 10 digits", Toast.LENGTH_LONG);
+                    }
 
                 }catch(Exception e){
-                    Toast.makeText(FifthActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FifthActivity.this, "SMS failed", Toast.LENGTH_SHORT).show();
                 }
 
 

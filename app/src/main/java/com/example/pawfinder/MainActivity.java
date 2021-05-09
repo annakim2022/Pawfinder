@@ -2,10 +2,8 @@ package com.example.pawfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,7 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -22,13 +20,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager sensorManager;
     private Sensor lightSensor;
-    private TextView textView;
+    // private TextView textView;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.textView);
+       // textView = findViewById(R.id.textView);
+        image = findViewById(R.id.imageView);
+        image.setImageResource(R.drawable.cat);
 
         // sensor for brightness
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
