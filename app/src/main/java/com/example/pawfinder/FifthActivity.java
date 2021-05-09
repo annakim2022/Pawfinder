@@ -25,12 +25,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+
 public class FifthActivity extends AppCompatActivity implements SensorEventListener {
 
     private Button button_backToMain, button_shareAct5;
     private TextView textView_phoneText, textView_message;
     private EditText editText_phone;
 
+    private ArrayList<String> url;
     private String phoneNo;
     private String message;
 
@@ -56,11 +59,10 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
-
+        url = intent.getStringArrayListExtra("url");
         String type_updated = type.replace("Type: ", "");
 
-        textView_message.setText("Message: Hey, check out this " + type_updated + "! His/Her name is " + name + " and I'm " +
-                "thinking about adopting him/her. Let me know what you think!");
+        textView_message.setText("Check out this pet! Its name is " + name + " and I'm thinking about adopting it. Let me know what you think!");
         // just a thought we can also send the gender as an intent ^^ later problem
 
         button_shareAct5.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +87,8 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
                     }
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                    Toast.makeText(FifthActivity.this, "SMS SENT YAY", Toast.LENGTH_LONG).show();
+                    smsManager.sendTextMessage(phoneNo, null, url.get(0), null, null);
+                    Toast.makeText(FifthActivity.this, "message sent", Toast.LENGTH_LONG).show();
 
                 }catch(Exception e){
                     Toast.makeText(FifthActivity.this, "failed", Toast.LENGTH_SHORT).show();
@@ -113,6 +116,7 @@ public class FifthActivity extends AppCompatActivity implements SensorEventListe
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                    smsManager.sendTextMessage(phoneNo, null, url.get(0), null, null);
                     Toast.makeText(getApplicationContext(), "SMS sent.",
                             Toast.LENGTH_LONG).show();
                 } else {
