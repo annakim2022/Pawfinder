@@ -112,7 +112,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             @Override
             public void onClick(View v) {
                 System.out.println(counter);
-                launchNextActivity(counter, id, org);
+                launchNextActivity(counter, id, org, photos);
             }
         });
 
@@ -250,13 +250,15 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
 
 
 
-    public void launchNextActivity(int counter, List<String> id, List<String> org){
+    public void launchNextActivity(int counter, List<String> id, List<String> org, List<String> photos){
         String pet = id.get(counter);
         String org_1 = org.get(counter);
+        String photo_string = photos.get(counter);
         Intent intent = new Intent(this, FourthActivity.class);
         intent.putExtra("token", token);
         intent.putExtra("pet", pet);
         intent.putExtra("org", org_1);
+        intent.putExtra("photo", photo_string);
         System.out.println("THIS IS THE PET ID " + pet);
         System.out.println("This is the org" + org_1);
         startActivity(intent);

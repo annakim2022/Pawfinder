@@ -49,6 +49,7 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
     private Sensor lightSensor;
     private String org;
     private String token;
+    private String photo;
 
     private ArrayList<String> url;
 
@@ -104,6 +105,9 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
         token = intent.getStringExtra("token");
         String id = intent.getStringExtra("pet");
         org = intent.getStringExtra("org");
+        photo = intent.getStringExtra("photo");
+        Picasso.get().load(photo).into(imaageView_act4);
+
 
         String api_url = "https://api.petfinder.com/v2/animals/" + id;
 
@@ -132,15 +136,6 @@ public class FourthActivity extends AppCompatActivity implements SensorEventList
                     String url_string = animal.getString("url");
                     url.add(url_string);
 
-
-                    JSONArray photo_arr = animal.getJSONArray("photos");
-                    if(photo_arr.length() > 0){
-                        JSONObject photo_obj = photo_arr.getJSONObject(0);
-                        String photo_string = photo_obj.getString("small");
-                        if(photo_string != null){
-                            Picasso.get().load(photo_string).into(imaageView_act4);
-                        }
-                    }
 
                     // type info
                     String type = animal.getString("type");
