@@ -265,6 +265,11 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
 
 
     public void launchNextActivity(int counter, List<String> id, List<String> org, List<String> photos){
+       // counter --;
+        if(counter == id.size()){
+            counter --;
+            System.out.println("changing the counter size");
+        }
         String pet = id.get(counter);
         String org_1 = org.get(counter);
         String photo_string = photos.get(counter);
