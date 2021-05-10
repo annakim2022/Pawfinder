@@ -57,7 +57,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             checkBox_male, checkBox_small, checkBox_medSize, checkBox_large, checkBox_XL, checkBox_short, checkBox_medCoat,
             checkBox_long, checkBox_wire, checkBox_hairless, checkBox_curly;
 
-    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjJmN2NlMTE4ZGQ2MzRiODY2NDI3ZGI1ZjliYWZmZmMyNWMzNTI5MTFmODI2YWU2MzhlODA5YTk0ZDM2YjRlYWVhYWJiMDU0OTJiMTc3NzNiIiwiaWF0IjoxNjIwNjAyNTIyLCJuYmYiOjE2MjA2MDI1MjIsImV4cCI6MTYyMDYwNjEyMiwic3ViIjoiIiwic2NvcGVzIjpbXX0.fbtS1PxW2NKKU3deWxCb-ALjks5lSm9aZDE0ggcrheXO4r1FijVov_ppw5-gi8W8X3cwp_Zeo6pCxRebyw9anVRDcIy_a0s81hntFm421fppORRwvRpu6JKnI_nzrjMazh4NXntZZRNFKv0HxErA-c-JkEgLbg6aRNypRqRpxkiYsSHJNlf4wO9pOYF70N2wyxNtxsJfbOmSZqF9a1zolQqi522cWH24kuVfi5A81q1ZVN67duHhm59qnXvf081Joy3DobXztSqAMJ-7ZBwM6_fDtazlp1Bgr8bCVvEvBNLRhhI5d8RZZZ1RQSuwTdB8f8BXiP__PH1rc3AP4y-X9Q";
+    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsajg2ekZPU0k3YTB3QVlEZUR0WVBLcUxodVdEcFE5UUN3bUxlejB6d0FpdmFTSVUzcyIsImp0aSI6IjUyODhiN2ZhNGIxMDBlNzRmOWJmNzg5Nzg2MTRjMWZjNjBkZDVjYjYzOTljMzM2ZGM1Yzg3ODA0MDU5YWRkMzEyNzU3NDk1ZjE5ZTM2NTdiIiwiaWF0IjoxNjIwNjAyNzU1LCJuYmYiOjE2MjA2MDI3NTUsImV4cCI6MTYyMDYwNjM1NSwic3ViIjoiIiwic2NvcGVzIjpbXX0.PP2X-k45MJM3L002qNjc4zbHzmnFpGjkz9UJ6bFXtDjtjUJL2B5kmwhHrqaft5HKPrUSiw9XQRJyJ68cUq7GoAhoeitobkDsM-4zGH_mpM9K13o12A4urQkPRfLsAtvRFyz2kmC9kprDOihr0gXwBTSFAI63C1gl_KWOxgzB5zsSMoKUFEY2XdG4yBPkVpnMrHSO7Pnxr_0RXgftRe8osqwR48pAyjZy1vxxnjGt89izU2EF1VEW_xzB3CWdbJMz2Kwn5fO-wwyZePT43kBih8aFJahHdQuEuK62hDnxkZWlre2xg3oyex05l_8tu9vbEA8y6SQ4SdxJFEikDs6TZQ";
 
     private Switch switch_declawed, switch_houseTrained, switch_gwChildren, switch_gwCats, switch_gwDogs, switch_specialNeeds;
     private SeekBar seekBar;
@@ -139,22 +139,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         button_find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int checked = 0;
-                if (checkBox_cat.isChecked()){
-                    checked = checked + 1;
-                }
-                if (checkBox_dog.isChecked()){
-                    checked = checked + 1;
-                }
-                if (checkBox_rabbit.isChecked()){
-                    checked = checked + 1;
-                }
-                if (checked > 1){
-                    Toast.makeText(SecondActivity.this, "please only check 1 pet type", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    launchNextActivity(v);
-                }
+                launchNextActivity(v);
             }
         });
 
@@ -265,7 +250,6 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         boolean gwChildren = switch_gwChildren.isChecked();
         boolean gwCats = switch_gwCats.isChecked();
         boolean gwDogs = switch_gwDogs.isChecked();
-        int checked = 0;
 
         if (catChecked) {
             api_url = api_url + "type=cat&";
@@ -343,7 +327,6 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         if (gwDogs) {
             api_url = api_url + "good_with_dogs=1&";
         }
-
         // get location
         // get distance
         //api_url = api_url + "location=" + getLastLocation() + "&";

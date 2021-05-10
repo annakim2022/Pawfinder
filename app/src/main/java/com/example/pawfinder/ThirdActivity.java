@@ -103,7 +103,9 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         button_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter ++;
+                if(counter < type.size()) {
+                    counter++;
+                }
                 nextPet(type, name, age, gender, distance, photos, counter);
             }
         });
@@ -112,6 +114,9 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             @Override
             public void onClick(View v) {
                 System.out.println(counter);
+              //  if(counter == id.size()){
+                    counter --;
+            //    }
                 launchNextActivity(counter, id, org, photos);
             }
         });
@@ -223,16 +228,22 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
 
 
     public void nextPet(List<String> type, List<String> name, List<String> age, List<String> gender, List<String> distance, List<String> photos, int counter){
-        textView_typeAct3.setText("Type: " + type.get(counter));
-        textView_nameAct3.setText("Name: " + name.get(counter));
-        textView_ageAct3.setText("Age: " + age.get(counter));
-        textView_genderAct3.setText("Gender: " + gender.get(counter));
-        if(distance.get(counter) == null){
-            textView_distanceAct3.setText("N/A");
-        }else {
-            textView_distanceAct3.setText("Distance: " + distance.get(counter) + " mi");
-        }
-        Picasso.get().load(photos.get(counter)).into(imageView_pet);
+       try {
+           textView_typeAct3.setText("Type: " + type.get(counter));
+           textView_nameAct3.setText("Name: " + name.get(counter));
+           textView_ageAct3.setText("Age: " + age.get(counter));
+           textView_genderAct3.setText("Gender: " + gender.get(counter));
+           if (distance.get(counter) == null) {
+               textView_distanceAct3.setText("N/A");
+           } else {
+               textView_distanceAct3.setText("Distance: " + distance.get(counter) + " mi");
+           }
+           Picasso.get().load(photos.get(counter)).into(imageView_pet);
+       }catch(Exception e){
+           Toast.makeText(ThirdActivity.this, "No more pets!", Toast.LENGTH_LONG).show();
+           System.out.println("no more pets");
+       }
+
     }
 
     public void backPet(List<String> type, List<String> name, List<String> age, List<String> gender, List<String> distance, List<String> photos, int counter){
