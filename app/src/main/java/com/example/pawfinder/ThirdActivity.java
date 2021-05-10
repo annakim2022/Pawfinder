@@ -106,7 +106,11 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
                 if(counter < type.size()) {
                     counter++;
                 }
+                else {
+                    Toast.makeText(ThirdActivity.this, "No more pets!", Toast.LENGTH_LONG).show();
+                }
                 nextPet(type, name, age, gender, distance, photos, counter);
+
             }
         });
 
@@ -115,7 +119,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
             public void onClick(View v) {
                 System.out.println(counter);
               //  if(counter == id.size()){
-                    counter --;
+                  // counter --;
             //    }
                 launchNextActivity(counter, id, org, photos);
             }
@@ -240,8 +244,7 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
            }
            Picasso.get().load(photos.get(counter)).into(imageView_pet);
        }catch(Exception e){
-           Toast.makeText(ThirdActivity.this, "No more pets!", Toast.LENGTH_LONG).show();
-           System.out.println("no more pets");
+           //Toast.makeText(ThirdActivity.this, "No more pets!", Toast.LENGTH_LONG).show();
        }
 
     }
