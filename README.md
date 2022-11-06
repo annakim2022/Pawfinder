@@ -1,10 +1,12 @@
 # Pawfinder
 
 Pawfinder git link: annakim2022/Pawfinder (github.com) Usage:
+
 • To run the app, you will need to get a bearer token by running the following lines in the terminal:
 curl -d "grant_type=client_credentials&client_id=lj86zFOSI7a0wAYDeDtYPKqLhuWDpQ9QCwmLez 0zwAivaSIU3s&client_secret=8DaRw0YlMTrWWeu3oEKYORhnZM20hP4Ya98jtWgp" https://api.petfinder.com/v2/oauth2/token
 • This should return a (relatively long) line containing a bearer token that you must then use to replace the token variable in the Second Activity on line 60. This bearer token only lasts for an hour and needs to be replaced if the user continues to use the app for more than that amount of time.
-Major Features/Screens:
+
+##Major Features/Screens:
 • First/Main Activity (Start screen):
 o Includes a start button to go to the second activity.
 • Second Activity (Filter page) *this is where optional feature GPS (getting user location) is implemented and a third party API is used:
@@ -23,7 +25,8 @@ o At the bottom of the screen, there are two buttons, a “Share” button and a
    
 o This page contains an area to put your phone number and a message with a small description about the animal to send to a friend.
 o At the bottom of the text, there is a “Share” button that will send a message to the phone number the user entered.
-Optional Features:
+
+##Optional Features:
 • GPS/Location Awareness (15 points) + Device Shake (10 points) + Light Sensor (10 points) + Using one or more third-party APIs (10 points) + Open shared activity/features (5 points) = 50 points
 • GPS/Location Awareness (15 points)
 o This will ask the user for their permission to access their location only once, while
