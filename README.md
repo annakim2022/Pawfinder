@@ -6,15 +6,21 @@ Pawfinder git link: annakim2022/Pawfinder (github.com)
 
 • To run the app, you will need to get a bearer token by running the following lines in the terminal:
 curl -d "grant_type=client_credentials&client_id=lj86zFOSI7a0wAYDeDtYPKqLhuWDpQ9QCwmLez 0zwAivaSIU3s&client_secret=8DaRw0YlMTrWWeu3oEKYORhnZM20hP4Ya98jtWgp" https://api.petfinder.com/v2/oauth2/token
+
 • This should return a (relatively long) line containing a bearer token that you must then use to replace the token variable in the Second Activity on line 60. This bearer token only lasts for an hour and needs to be replaced if the user continues to use the app for more than that amount of time.
 
 ## Major Features/Screens:
 • First/Main Activity (Start screen):
-o Includes a start button to go to the second activity.
+
+- Includes a start button to go to the second activity.
+
 • Second Activity (Filter page) *this is where optional feature GPS (getting user location) is implemented and a third party API is used:
-o This activity includes a seekbar, checkboxes, and switches to let the user filter certain attributes to find pets to their liking.
-o After using the filter’s, the user can click the “Find Pets” button at the bottom to launch the next activity and explore the pets matching the filters they put in.
-o If there are no results, the page will not continue to the third activity. This usually means that no pet matches the filters put on.
+
+- This activity includes a seekbar, checkboxes, and switches to let the user filter certain attributes to find pets to their liking.
+
+- After using the filter’s, the user can click the “Find Pets” button at the bottom to launch the next activity and explore the pets matching the filters they put in.
+
+- If there are no results, the page will not continue to the third activity. This usually means that no pet matches the filters put on.
 • Third Activity (Browse page) *this is where optional feature device shake is implemented:
 o This activity includes an image of the pet and a list of different attributes below it. Under all that, there is a “More Info” button and a “Next Pet” button.
 o Clicking on the “More Info” button will take the user to the fourth activity that contains more information about the pet.
